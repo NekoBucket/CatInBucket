@@ -1,0 +1,40 @@
+modLoader="kotori_scala"
+loaderVersion="[2.13.3, 2.14)"
+license="AGPL-3.0"
+issueTrackerURL="https://github.com/NekoBucket/NekoTools/issues"
+[[mods]]
+modId="nekotools"
+version="${file.jarVersion}"
+displayName="Neko Tools"
+authors="NekoBucket"
+description='''
+A util mods for vanilla Minecraft.
+'''
+# A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
+#updateJSONURL="https://change.me.example.invalid/updates.json" #optional
+# A URL for the "homepage" for this mod, displayed in the mod UI
+#displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
+# A file name (in the root of the mod JAR) containing a logo for display
+#logoFile="examplemod.png" #optional
+# A text field displayed in the mod UI
+#credits="Aknowledges ..." #optional
+# The description text for the mod (multi line!) (#mandatory)
+# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
+[[dependencies.nekotools]]
+modId="forge" #mandatory
+# Does this dependency have to exist - if not, ordering below must be specified
+mandatory=true #mandatory
+# The version range of the dependency
+versionRange="[36,)" #mandatory
+# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+ordering="NONE"
+# Side this dependency is applied on - BOTH, CLIENT or SERVER
+side="BOTH"
+# Here's another dependency
+[[dependencies.nekotools]]
+modId="minecraft"
+mandatory=true
+# This version range declares a minimum of the current minecraft version up to but not including the next major version
+versionRange="[1.16.5,1.17)"
+ordering="NONE"
+side="BOTH"
