@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "nekotools",
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "nekotools:neko_ingot"
+    }
+  },
+  "result": {
+    "item": "nekotools:neko_block"
+  }
+}

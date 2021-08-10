@@ -1,0 +1,3 @@
+package nekobucket.nekotools.datagen.recipes
+
+object RecipeTypeNotFoundException extends Exception

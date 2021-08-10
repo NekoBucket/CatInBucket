@@ -1,4 +1,6 @@
 {
   "itemGroup.nekotools": "猫猫工具",
-  "item.nekotools.test_item": "测试物件"
+  "item.nekotools.test_item": "测试物件",
+  "item.nekotools.neko_ingot": "猫猫锭",
+  "block.nekotools.neko_block": "猫猫块"
 }

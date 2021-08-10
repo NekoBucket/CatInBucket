@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "nekotools",
+  "pattern": [
+    "XXX",
+    " O "
+  ],
+  "key": {
+    "X": [
+      {
+        "item": "minecraft:cod"
+      },
+      {
+        "item": "minecraft:salmon"
+      },
+      {
+        "item": "minecraft:tropical_fish"
+      },
+      {
+        "item": "minecraft:pufferfish"
+      },
+      {
+        "item": "minecraft:cooked_cod"
+      },
+      {
+        "item": "minecraft:cooked_salmon"
+      }
+    ],
+    "O": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "nekotools:neko_ingot"
+  }
+}

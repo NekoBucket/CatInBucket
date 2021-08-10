@@ -2,7 +2,8 @@ package nekobucket.nekotools.mod
 
 import nekobucket.nekotools.mod.registry.{ BlockRegistry, ItemRegistry }
 
+/* Register block and items to mod */
 trait ModInitializer {
-  ItemRegistry.ITEMS.register(EventBus.Mod)
-  BlockRegistry.BLOCKS.register(EventBus.Mod)
+  ItemRegistry.register()
+  BlockRegistry.register()
 }
