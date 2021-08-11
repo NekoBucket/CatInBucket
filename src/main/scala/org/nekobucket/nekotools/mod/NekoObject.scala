@@ -1,14 +1,17 @@
 package org.nekobucket.nekotools.mod
 
+import net.minecraftforge.client.model.generators.ItemModelBuilder
+import net.minecraftforge.common.data.ExistingFileHelper
+
 import java.util.function.Supplier
 import scala.reflect.ClassTag
 
 abstract class NekoObject[T: ClassTag] extends Supplier[T] {
-  /* ID for registering mod objects */
+  // ID for registering mod objects
   val ID: String
   var instance: Option[T] = None
 
-  /* Get instance for generic type */
+  // Get instance for generic type
   private def getInstance(implicit ct: ClassTag[T]): T = instance match {
     case Some(obj) => obj
     case None =>
@@ -17,4 +20,6 @@ abstract class NekoObject[T: ClassTag] extends Supplier[T] {
       obj
   }
   override def get: T = getInstance
+
+//  def getItemModelBuilder: ExistingFileHelper => ItemModelBuilder
 }

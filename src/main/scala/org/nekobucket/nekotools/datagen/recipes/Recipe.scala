@@ -8,14 +8,14 @@ import net.minecraft.data._
 
 import java.util.function.Consumer
 
-class Recipe(builder: Recipe.RecipeFunc) {
-  def save(consumer: Consumer[IFinishedRecipe]): Unit = builder(consumer)
+class Recipe(func: Recipe.RecipeFunc) {
+  def save(consumer: Consumer[IFinishedRecipe]): Unit = func(consumer)
 }
 
 object Recipe {
   type RecipeFunc = Consumer[IFinishedRecipe] => Unit
 
-  def of(id: String)(builder: Any): Recipe = matchBuilder(id, builder).let(new Recipe(_))
+  def of(id: String)(builder: => Any): Recipe = matchBuilder(id, builder) |> (new Recipe(_))
 
   def matchBuilder(id: String, builder: Any): RecipeFunc = builder match {
     case b: ShapedRecipeBuilder => b.group(MOD_ID)

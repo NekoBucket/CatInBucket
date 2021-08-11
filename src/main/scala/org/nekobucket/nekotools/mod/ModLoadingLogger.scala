@@ -3,6 +3,7 @@ package org.nekobucket.nekotools.mod
 import net.minecraft.block.Blocks
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import net.minecraftforge.fml.event.lifecycle.{ FMLClientSetupEvent, FMLCommonSetupEvent, InterModProcessEvent }
+import org.nekobucket.nekotools.mod.EventBus.getEventBus
 
 import java.util.stream.Collectors
 

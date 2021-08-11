@@ -13,6 +13,24 @@ object Extensions {
       if (predicate(x)) doTrue(x)
       else doFalse(x)
 
+    // pipe operator
     def let[R](f: T => R): R = f(x)
+    def let[R](f: () => R): R = f()
+    def |>[R](f: T => R) : R = let[R](f)
+    def |>[R](f: () => R): R = let[R](f)
+  }
+
+  implicit class ItemStackExt(itemStack: ItemStack) {
+    // adjust count in ItemStack
+    def addCount(n: Int): ItemStack = {
+      itemStack.setCount(itemStack.getCount + n)
+      itemStack
+    }
+    def reduceCount(n: Int): ItemStack = addCount(-n)
+    // custom operators
+    def += (n: Int): ItemStack = addCount(n)
+    def -= (n: Int): ItemStack = reduceCount(n)
+    def ++ : ItemStack = this += 1
+    def -- : ItemStack = this -= 1
   }
 }
