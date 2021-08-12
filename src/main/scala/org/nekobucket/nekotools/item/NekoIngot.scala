@@ -17,7 +17,7 @@ object NekoIngot extends NekoObject[NekoIngot] with NekoIngotRecipe with NekoIng
 }
 
 trait NekoIngotRecipe {
-  Recipes ~= Recipe.of("neko_ingot_from_crafting_3fish_1iron") {
+  Recipes +~ Recipe.of("neko_ingot_from_crafting_3fish_1iron") {
     ShapedRecipeBuilder.shaped(ItemRegistry.get[NekoIngot], 1)
       .pattern("XXX")
       .pattern(" O ")
@@ -27,7 +27,7 @@ trait NekoIngotRecipe {
       .define('O', Items.IRON_INGOT)
   }
 
-  Recipes ~= Recipe.of("neko_ingot_from_crafting_neko_block") {
+  Recipes +~ Recipe.of("neko_ingot_from_crafting_neko_block") {
     ShapelessRecipeBuilder.shapeless(ItemRegistry.get[NekoIngot], 9)
       .requires(ItemRegistry.get[NekoBlock.Item], 1)
   }

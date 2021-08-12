@@ -1,8 +1,5 @@
 package org.nekobucket.nekotools.mod
 
-import net.minecraftforge.client.model.generators.ItemModelBuilder
-import net.minecraftforge.common.data.ExistingFileHelper
-
 import java.util.function.Supplier
 import scala.reflect.ClassTag
 

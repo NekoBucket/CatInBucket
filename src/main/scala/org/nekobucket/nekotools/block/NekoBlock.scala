@@ -29,7 +29,7 @@ object NekoBlock extends NekoObject[NekoBlock] {
 }
 
 trait ItemRecipe {
-  Recipes ~= Recipe.of("neko_block_from_crafting_neko_ingot") {
+  Recipes +~ Recipe.of("neko_block_from_crafting_neko_ingot") {
     ShapedRecipeBuilder.shaped(ItemRegistry.get[NekoBlock.Item], 1)
       .pattern("XXX")
       .pattern("XXX")

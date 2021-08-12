@@ -31,6 +31,12 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 idea {
     targetVersion = "1.8"
+    module {
+        for (String excludeDirName in ["run", "out", "logs", "gradle"]) {
+            File excludeDir = new File(projectDir, excludeDirName)
+            excludeDirs.add(excludeDir)
+        }
+    }
 }
 
 // add scala compile options
@@ -44,13 +50,17 @@ println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getPro
 minecraft {
     // Use official mapping due to
     // https://mcforge.readthedocs.io/en/1.16.x/gettingstarted/#migration-to-mojangs-official-mappings
-    mappings channel: 'official', version: project.mc_version
+    mappings channel: "$project.mapping_channel", version: project.mapping_version
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
     // Default run configurations.
     runs {
         client {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'info'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
             mods {
                 nekotools {
                     source sourceSets.main
@@ -62,6 +72,8 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'info'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
             mods {
                 nekotools {
                     source sourceSets.main
@@ -73,6 +85,8 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'info'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             args '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
             mods {
@@ -92,6 +106,7 @@ sourceSets.main.scala.srcDir "src/main/java"
 sourceSets.main.java.srcDirs = []
 
 repositories {
+    // SLP
     maven {
         name = "Azure-SLP"
         url = "https://pkgs.dev.azure.com/Kotori316/minecraft/_packaging/mods/maven/v1"
@@ -99,6 +114,27 @@ repositories {
             includeModule("com.kotori316", "ScalableCatsForce".toLowerCase())
         }
     }
+
+    // mappings
+    maven {
+        name 'thiakil'
+        url 'https://maven.thiakil.com'
+        content {
+            includeGroup 'de.oceanlabs.mcp'
+            includeGroup 'net.minecraft'
+        }
+    }
+
+    // curse forge
+    maven {
+        name = "CurseMaven"
+        url = "https://www.cursemaven.com"
+
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+
     mavenCentral()
 }
 
@@ -111,17 +147,15 @@ dependencies {
 // Example for how to get properties into the manifest for reading by the runtime..
 // TODO not tested
 jar {
-    manifest {
-        attributes([
-                "Specification-Title": project.mod_title,
-                "Specification-Vendor": project.vender_name,
-                "Specification-Version": project.mod_version,
-                "Implementation-Title": project.mod_title,
-                "Implementation-Version": project.mod_version,
-                "Implementation-Vendor" : project.vender_name,
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
-    }
+    manifest.attributes([
+            "Specification-Title"     : project.mod_title,
+            "Specification-Vendor"    : project.vender_name,
+            "Specification-Version"   : project.mod_version,
+            "Implementation-Title"    : project.mod_title,
+            "Implementation-Version"  : project.mod_version,
+            "Implementation-Vendor"   : project.vender_name,
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+    ])
 }
 
 // Example configuration to allow publishing using the maven-publish task

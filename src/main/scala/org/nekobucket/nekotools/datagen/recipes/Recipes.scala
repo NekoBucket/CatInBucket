@@ -14,5 +14,5 @@ class Recipes(implicit generator: DataGenerator) extends RecipeProvider(generato
 
 object Recipes extends DataGenObj[() => Recipe] {
   def addAsFunc(recipe: => Recipe): Unit = array += (() => recipe)
-  def ~=(recipe: => Recipe): Unit = addAsFunc(recipe)
+  def +~(recipe: => Recipe): Unit = addAsFunc(recipe)
 }
