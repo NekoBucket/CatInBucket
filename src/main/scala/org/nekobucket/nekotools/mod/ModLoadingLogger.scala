@@ -2,7 +2,7 @@ package org.nekobucket.nekotools.mod
 
 import net.minecraft.block.Blocks
 import net.minecraftforge.eventbus.api.SubscribeEvent
-import net.minecraftforge.fml.event.lifecycle.{ FMLClientSetupEvent, FMLCommonSetupEvent, InterModProcessEvent }
+import net.minecraftforge.fml.event.lifecycle._
 import org.nekobucket.nekotools.mod.EventBus.getEventBus
 
 import java.util.stream.Collectors
@@ -23,5 +23,10 @@ trait ModLoadingLogger {
   @SubscribeEvent
   def processIMC(event: InterModProcessEvent): Unit = {
     LOGGER.info(s"Got IMC ${event.getIMCStream.map(_.getMessageSupplier.get).collect(Collectors.toList)}")
+  }
+
+  @SubscribeEvent
+  def onFinished(event: FMLLoadCompleteEvent): Unit = {
+    LOGGER.info("Loading finished")
   }
 }

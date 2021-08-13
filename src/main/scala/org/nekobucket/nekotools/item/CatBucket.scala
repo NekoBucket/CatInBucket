@@ -3,7 +3,6 @@ package org.nekobucket.nekotools.item
 import net.minecraft.block.FlowingFluidBlock
 import net.minecraft.client.Minecraft
 import net.minecraft.entity.{ EntityType, SpawnReason }
-import net.minecraft.entity.passive.CatEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Item.Properties
 import net.minecraft.item.{ ItemStack, Items }
@@ -11,12 +10,11 @@ import net.minecraft.util.math.{ BlockRayTraceResult, RayTraceResult }
 import net.minecraft.util.{ ActionResult, Hand }
 import net.minecraft.world.World
 import net.minecraft.world.server.ServerWorld
-import net.minecraftforge.event.entity.player.EntityItemPickupEvent
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import org.nekobucket.nekotools.mod.EventBus.getEventBus
 import org.nekobucket.nekotools.mod.registry.ItemRegistry
-import org.nekobucket.nekotools.mod.{ EventBus, LOGGER, NekoObject }
+import org.nekobucket.nekotools.mod.{ EventBus, NekoObject }
 import org.nekobucket.nekotools.util.Extensions._
 
 import scala.language.postfixOps
@@ -27,7 +25,6 @@ class CatBucket extends NekoItem(new Properties().stacksTo(1)) {
     player.getItemInHand(hand) |> (itemStack =>
       if (!world.isClientSide) {
           val target = Minecraft.getInstance.hitResult
-          //      if (target.distanceTo(player) < 5) {}
           if (target.getType == RayTraceResult.Type.BLOCK) {
             val blockPos = target.asInstanceOf[BlockRayTraceResult].getBlockPos
             if (!world.getBlockState(blockPos).getBlock.isInstanceOf[FlowingFluidBlock]) {
@@ -66,10 +63,5 @@ object CatBucket extends NekoObject[CatBucket] {
         itemStack => event.getPlayer.addItem(itemStack)
       }
     }
-  }
-
-  @SubscribeEvent
-  def onPickup(event: EntityItemPickupEvent): Unit = {
-    LOGGER.info("-------------------")
   }
 }
