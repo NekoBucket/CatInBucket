@@ -6,6 +6,7 @@ import net.minecraft.entity.{ EntityType, SpawnReason }
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Item.Properties
 import net.minecraft.item.{ ItemStack, Items }
+import net.minecraft.nbt.CompoundNBT
 import net.minecraft.util.math.{ BlockRayTraceResult, RayTraceResult }
 import net.minecraft.util.{ ActionResult, Hand }
 import net.minecraft.world.World
@@ -28,7 +29,10 @@ class CatBucket extends NekoItem(new Properties().stacksTo(1)) {
           if (target.getType == RayTraceResult.Type.BLOCK) {
             val blockPos = target.asInstanceOf[BlockRayTraceResult].getBlockPos
             if (!world.getBlockState(blockPos).getBlock.isInstanceOf[FlowingFluidBlock]) {
-              EntityType.CAT.spawn(world.asInstanceOf[ServerWorld], itemStack, player, blockPos.above, SpawnReason.BUCKET, false, false)
+              val catEntity = EntityType.CAT.spawn(world.asInstanceOf[ServerWorld], itemStack, player, blockPos.above, SpawnReason.BUCKET, false, false)
+              new CompoundNBT().also(catEntity.save)
+                .merge(itemStack.getTagElement("cat"))
+                .also(catEntity.load)
               itemStack -= 1
               ActionResult.consume(itemStack)
             } else {
@@ -58,10 +62,21 @@ object CatBucket extends NekoObject[CatBucket] {
       useBucket && targetCat
     }) {
       itemStack -= 1
-      target.remove()
-      ItemRegistry.get[CatBucket].toItemStack |> {
+      ItemRegistry.get[CatBucket].toItemStack.also {
+        itemStack => {
+          val nbt = new CompoundNBT().also(target.saveWithoutId)
+          nbt.putString("Owner", event.getPlayer.getName.getString)
+          nbt.remove("Sitting")
+          nbt.putByte("PersistenceRequired", 1)
+          nbt.remove("Attributes")
+          nbt.remove("Motion")
+          nbt.remove("Pos")
+          itemStack.addTagElement("cat", nbt)
+        }
+      } |> {
         itemStack => event.getPlayer.addItem(itemStack)
       }
+      target.remove()
     }
   }
 }
