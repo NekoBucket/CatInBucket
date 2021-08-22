@@ -18,6 +18,11 @@ object Extensions {
     def let[R](f: () => R): R = f()
     def |>[R](f: T => R) : R = let[R](f)
     def |>[R](f: () => R): R = let[R](f)
+
+    def also(f: T => Any): T = {
+      f(x)
+      x
+    }
   }
 
   implicit class ItemStackExt(itemStack: ItemStack) {

@@ -2,5 +2,6 @@
   "itemGroup.nekotools": "Neko Tools",
   "item.nekotools.test_item": "Test Item",
   "item.nekotools.neko_ingot": "Neko Ingot",
-  "block.nekotools.neko_block": "Neko Block"
+  "block.nekotools.neko_block": "Neko Block",
+  "item.nekotools.cat_boots": "Cat Boots"
 }

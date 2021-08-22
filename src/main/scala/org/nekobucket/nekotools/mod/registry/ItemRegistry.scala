@@ -8,7 +8,7 @@ import net.minecraftforge.registries.{ DeferredRegister, ForgeRegistries }
 import scala.reflect.ClassTag
 import org.nekobucket.nekotools.util.Extensions._
 import org.nekobucket.nekotools.block.NekoBlock
-import org.nekobucket.nekotools.item.{ CatBucket, NekoIngot, TestItem, TestJavaItem }
+import org.nekobucket.nekotools.item.{ CatBoots, CatBucket, NekoIngot, TestItem, TestJavaItem }
 
 object ItemRegistry extends Registry[Item] {
   override val ENTRIES: DeferredRegister[Item] = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID)
@@ -23,4 +23,7 @@ object ItemRegistry extends Registry[Item] {
 
   // add block items
   val nekoBlock: RegistryObject[NekoBlock.Item] = register(NekoBlock.Item)
+
+  // equipments
+  val catBoots: RegistryObject[CatBoots] = register(CatBoots)
 }

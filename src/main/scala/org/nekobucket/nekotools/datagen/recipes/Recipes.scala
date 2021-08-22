@@ -9,7 +9,7 @@ import java.util.function.Consumer
 class Recipes(implicit generator: DataGenerator) extends RecipeProvider(generator) {
   import Recipes._
 
-  override def buildShapelessRecipes(consumer : Consumer[IFinishedRecipe]): Unit = array.foreach(_().save(consumer))
+  override def buildShapelessRecipes(consumer : Consumer[IFinishedRecipe]): Unit = array.foreach(_ ().save(consumer))
 }
 
 object Recipes extends DataGenObj[() => Recipe] {

@@ -23,12 +23,12 @@ object NekoBlock extends NekoObject[NekoBlock] {
 
   class Item extends NekoBlockItem(NekoBlock.get)
 
-  object Item extends NekoObject[NekoBlock.Item] with ItemRecipe with ItemModel {
+  object Item extends NekoObject[NekoBlock.Item] with NekoBlockRecipe with NekoBlockItemModel {
     override val ID: String = "neko_block"
   }
 }
 
-trait ItemRecipe {
+trait NekoBlockRecipe {
   Recipes +~ Recipe.of("neko_block_from_crafting_neko_ingot") {
     ShapedRecipeBuilder.shaped(ItemRegistry.get[NekoBlock.Item], 1)
       .pattern("XXX")
@@ -38,7 +38,7 @@ trait ItemRecipe {
   }
 }
 
-trait ItemModel {
+trait NekoBlockItemModel {
   ItemModels += (
     _.getBuilder(NekoBlock.ID)
       .parent(new UncheckedModelFile(s"$MOD_ID:block/${NekoBlock.ID}"))

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "nekotools",
+  "pattern": [
+    "X X",
+    "O O"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:leather"
+    },
+    "O": {
+      "item": "nekotools:neko_ingot"
+    }
+  },
+  "result": {
+    "item": "nekotools:cat_boots"
+  }
+}

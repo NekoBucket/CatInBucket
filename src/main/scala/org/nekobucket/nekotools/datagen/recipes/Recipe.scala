@@ -1,6 +1,6 @@
 package org.nekobucket.nekotools.datagen.recipes
 
-import org.nekobucket.nekotools.mod.{ MOD_ID, getResourceLocation }
+import org.nekobucket.nekotools.mod.{ LOGGER, MOD_ID, getResourceLocation }
 import org.nekobucket.nekotools.util.Extensions._
 import net.minecraft.advancements.criterion.InventoryChangeTrigger
 import net.minecraft.block.Blocks
