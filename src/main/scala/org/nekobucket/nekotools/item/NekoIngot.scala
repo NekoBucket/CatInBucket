@@ -9,8 +9,10 @@ import org.nekobucket.nekotools.datagen.recipes.{ Recipe, Recipes }
 import org.nekobucket.nekotools.item.NekoIngot.ID
 import org.nekobucket.nekotools.mod.NekoObject
 import org.nekobucket.nekotools.mod.registry.ItemRegistry
+import org.nekobucket.nekotools.mod.registry.Register
 
-class NekoIngot extends NekoItem
+@Register.AsItem
+class NekoIngot extends NekoItemBase
 
 object NekoIngot extends NekoObject[NekoIngot] with NekoIngotRecipe with NekoIngotItemModel {
   override val ID = "neko_ingot"

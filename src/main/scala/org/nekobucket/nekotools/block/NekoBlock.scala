@@ -7,10 +7,11 @@ import net.minecraft.data.ShapedRecipeBuilder
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile
 import org.nekobucket.nekotools.datagen.models.ItemModels
 import org.nekobucket.nekotools.datagen.recipes.{ Recipe, Recipes }
-import org.nekobucket.nekotools.item.{ NekoBlockItem, NekoIngot }
+import org.nekobucket.nekotools.item.{ NekoBlockItemBase, NekoIngot }
 import org.nekobucket.nekotools.mod.{ MOD_ID, NekoObject }
-import org.nekobucket.nekotools.mod.registry.ItemRegistry
+import org.nekobucket.nekotools.mod.registry.{ ItemRegistry, Register }
 
+@Register.AsBlock
 class NekoBlock extends NekoBlockBase(Properties
   .of(Material.METAL)
   .requiresCorrectToolForDrops
@@ -21,10 +22,11 @@ class NekoBlock extends NekoBlockBase(Properties
 object NekoBlock extends NekoObject[NekoBlock] {
   override val ID: String = "neko_block"
 
-  class Item extends NekoBlockItem(NekoBlock.get)
+  @Register.AsItem
+  class Item extends NekoBlockItemBase(NekoBlock.get)
 
   object Item extends NekoObject[NekoBlock.Item] with NekoBlockRecipe with NekoBlockItemModel {
-    override val ID: String = "neko_block"
+    override val ID: String = NekoBlock.ID
   }
 }
 

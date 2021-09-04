@@ -10,6 +10,7 @@ import scala.language.implicitConversions
 package object mod {
   final val MOD_ID = "nekotools"
   final val MOD_NAME = "Neko Tools"
+  final val PACKAGE_NAME = "org.nekobucket.nekotools"
   final val LOGGER = LogManager.getLogger(MOD_ID)
 
   object EventBus {

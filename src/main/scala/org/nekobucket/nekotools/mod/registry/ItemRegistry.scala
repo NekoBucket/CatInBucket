@@ -7,23 +7,13 @@ import net.minecraftforge.registries.{ DeferredRegister, ForgeRegistries }
 
 import scala.reflect.ClassTag
 import org.nekobucket.nekotools.util.Extensions._
-import org.nekobucket.nekotools.block.NekoBlock
-import org.nekobucket.nekotools.item.{ CatBoots, CatBucket, NekoIngot, TestItem, TestJavaItem }
+import org.nekobucket.nekotools.item.{ TestItem, TestJavaItem }
 
-object ItemRegistry extends Registry[Item] {
-  override val ENTRIES: DeferredRegister[Item] = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID)
+private[nekotools] object ItemRegistry extends StaticRegister[Item, Register.AsItem] with Registry[Item] {
+  override val entries: DeferredRegister[Item] = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID)
 
-  // add items
+  // add items dynamically
   val testItem: RegistryObject[TestItem] = register(TestItem) // scala item example
   val testJavaItem: RegistryObject[TestJavaItem] = new TestJavaItem.Factory(ClassTag(classOf[TestJavaItem]))
     .let(factory => register[TestJavaItem](factory.ID, factory)) // java item example
-
-  val nekoIngot: RegistryObject[NekoIngot] = register(NekoIngot)
-  val catBucket: RegistryObject[CatBucket] = register(CatBucket)
-
-  // add block items
-  val nekoBlock: RegistryObject[NekoBlock.Item] = register(NekoBlock.Item)
-
-  // equipments
-  val catBoots: RegistryObject[CatBoots] = register(CatBoots)
 }

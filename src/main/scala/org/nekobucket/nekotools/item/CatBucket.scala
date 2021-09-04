@@ -15,35 +15,37 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import org.nekobucket.nekotools.mod.EventBus.getEventBus
 import org.nekobucket.nekotools.mod.registry.ItemRegistry
+import org.nekobucket.nekotools.mod.registry.Register
 import org.nekobucket.nekotools.mod.{ EventBus, NekoObject }
 import org.nekobucket.nekotools.util.Extensions._
 
 import scala.language.postfixOps
 
-class CatBucket extends NekoItem(new Properties().stacksTo(1)) {
+@Register.AsItem
+class CatBucket extends NekoItemBase(new Properties().stacksTo(1)) {
 
   override def use(world: World, player: PlayerEntity, hand: Hand): ActionResult[ItemStack] =
     player.getItemInHand(hand) |> (itemStack =>
       if (!world.isClientSide) {
-          val target = Minecraft.getInstance.hitResult
-          if (target.getType == RayTraceResult.Type.BLOCK) {
-            val blockPos = target.asInstanceOf[BlockRayTraceResult].getBlockPos
-            if (!world.getBlockState(blockPos).getBlock.isInstanceOf[FlowingFluidBlock]) {
-              val catEntity = EntityType.CAT.spawn(world.asInstanceOf[ServerWorld], itemStack, player, blockPos.above, SpawnReason.BUCKET, false, false)
-              new CompoundNBT().also(catEntity.save)
-                .merge(itemStack.getTagElement("cat"))
-                .also(catEntity.load)
-              itemStack -= 1
-              ActionResult.consume(itemStack)
-            } else {
-              ActionResult.pass(itemStack)
-            }
+        val target = Minecraft.getInstance.hitResult
+        if (target.getType == RayTraceResult.Type.BLOCK) {
+          val blockPos = target.asInstanceOf[BlockRayTraceResult].getBlockPos
+          if (!world.getBlockState(blockPos).getBlock.isInstanceOf[FlowingFluidBlock]) {
+            val catEntity = EntityType.CAT.spawn(world.asInstanceOf[ServerWorld], itemStack, player, blockPos.above, SpawnReason.BUCKET, false, false)
+            new CompoundNBT().also(catEntity.save)
+              .merge(itemStack.getTagElement("cat"))
+              .also(catEntity.load)
+            itemStack -= 1
+            ActionResult.consume(itemStack)
           } else {
             ActionResult.pass(itemStack)
           }
+        } else {
+          ActionResult.pass(itemStack)
         }
+      }
       else ActionResult.success(itemStack)
-    )
+      )
 }
 
 object CatBucket extends NekoObject[CatBucket] {
@@ -56,9 +58,11 @@ object CatBucket extends NekoObject[CatBucket] {
     val itemStack = event.getItemStack
     val target = event.getTarget
 
-    if ({
+    if ( {
       def useBucket: Boolean = itemStack.getItem == Items.BUCKET
+
       def targetCat: Boolean = target.getType == EntityType.CAT
+
       useBucket && targetCat
     }) {
       itemStack -= 1

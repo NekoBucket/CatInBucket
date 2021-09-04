@@ -13,8 +13,10 @@ import org.nekobucket.nekotools.datagen.recipes.{ Recipe, Recipes }
 import org.nekobucket.nekotools.item.level.NekoArmorMaterial
 import org.nekobucket.nekotools.mod.NekoObject
 import org.nekobucket.nekotools.mod.registry.ItemRegistry
+import org.nekobucket.nekotools.mod.registry.Register
 import org.nekobucket.nekotools.util.Extensions.{ AnyExt, ItemExt }
 
+@Register.AsItem
 class CatBoots extends NekoArmorItem(NekoArmorMaterial.NEKO, EquipmentSlotType.FEET) {
   // when crafted, give a fall protection 2 enchantment
   override def onCraftedBy(stack: ItemStack, worldIn: World, playerIn: PlayerEntity): Unit = {

@@ -9,7 +9,7 @@ object Extensions {
   }
 
   implicit class AnyExt[T](x: T) {
-    def ifElse[R](predicate: T => Boolean, doTrue: T => R, doFalse: T => R): R =
+    def ifElse[R](predicate: T => Boolean)(doTrue: T => R, doFalse: T => R): R =
       if (predicate(x)) doTrue(x)
       else doFalse(x)
 
