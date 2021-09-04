@@ -18,9 +18,11 @@ import org.nekobucket.nekotools.mod.registry.ItemRegistry
 import org.nekobucket.nekotools.mod.registry.Register
 import org.nekobucket.nekotools.mod.{ EventBus, NekoObject }
 import org.nekobucket.nekotools.util.Extensions._
+import space.controlnet.lightioc.annotation.Singleton
 
 import scala.language.postfixOps
 
+@Singleton
 @Register.AsItem
 class CatBucket extends NekoItemBase(new Properties().stacksTo(1)) {
 

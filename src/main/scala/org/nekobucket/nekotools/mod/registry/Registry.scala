@@ -1,6 +1,6 @@
 package org.nekobucket.nekotools.mod.registry
 
-import org.nekobucket.nekotools.mod.{ EventBus, NekoObject }
+import org.nekobucket.nekotools.mod.{ EventBus, LOGGER, NekoObject }
 import net.minecraftforge.fml.RegistryObject
 import net.minecraftforge.registries.{ DeferredRegister, IForgeRegistryEntry }
 import org.nekobucket.nekotools.util.Extensions.AnyExt
@@ -15,13 +15,16 @@ private[registry] trait Registry[T <: IForgeRegistryEntry[T]] {
 
   private[registry] def register[R <: T](name: String, supplier: NekoObject[R])(implicit tagR: ClassTag[R]): RegistryObject[R] =
     entries.register(name, supplier).also {
-      _ => mappings.addOne(tagR.runtimeClass.getName -> supplier.get)
+      _ => {
+        mappings.addOne(tagR.runtimeClass.getName -> supplier.get)
+      }
     }
   private[registry] def register[R <: T](nekoObj: NekoObject[R])(implicit tagR: ClassTag[R]): RegistryObject[R] = register[R](nekoObj.ID, nekoObj)(tagR)
   private[mod] def register(): Unit = entries.register(EventBus.Mod.bus.get)
 
   /* Caution: Only works after registration */
-  private[nekotools] def get[V <: T : ClassTag](implicit tag: ClassTag[V]): V = mappings(tag.runtimeClass.getName).asInstanceOf[V]
+  private[nekotools] def get[V <: T : ClassTag](implicit tag: ClassTag[V]): V =
+    mappings(tag.runtimeClass.getName).asInstanceOf[V]
 
 //  private def get[V <: T](implicit tagV: ClassTag[V]): Option[V] = {
 //    getClass.getDeclaredFields.map(f => (f, f.getType, f.getGenericType))

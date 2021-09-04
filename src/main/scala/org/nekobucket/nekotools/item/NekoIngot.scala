@@ -10,7 +10,9 @@ import org.nekobucket.nekotools.item.NekoIngot.ID
 import org.nekobucket.nekotools.mod.NekoObject
 import org.nekobucket.nekotools.mod.registry.ItemRegistry
 import org.nekobucket.nekotools.mod.registry.Register
+import space.controlnet.lightioc.annotation.Singleton
 
+@Singleton
 @Register.AsItem
 class NekoIngot extends NekoItemBase
 

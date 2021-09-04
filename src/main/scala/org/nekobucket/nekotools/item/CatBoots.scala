@@ -15,7 +15,9 @@ import org.nekobucket.nekotools.mod.NekoObject
 import org.nekobucket.nekotools.mod.registry.ItemRegistry
 import org.nekobucket.nekotools.mod.registry.Register
 import org.nekobucket.nekotools.util.Extensions.{ AnyExt, ItemExt }
+import space.controlnet.lightioc.annotation.Singleton
 
+@Singleton
 @Register.AsItem
 class CatBoots extends NekoArmorItem(NekoArmorMaterial.NEKO, EquipmentSlotType.FEET) {
   // when crafted, give a fall protection 2 enchantment

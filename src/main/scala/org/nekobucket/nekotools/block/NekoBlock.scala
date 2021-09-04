@@ -10,7 +10,9 @@ import org.nekobucket.nekotools.datagen.recipes.{ Recipe, Recipes }
 import org.nekobucket.nekotools.item.{ NekoBlockItemBase, NekoIngot }
 import org.nekobucket.nekotools.mod.{ MOD_ID, NekoObject }
 import org.nekobucket.nekotools.mod.registry.{ ItemRegistry, Register }
+import space.controlnet.lightioc.annotation.Singleton
 
+@Singleton
 @Register.AsBlock
 class NekoBlock extends NekoBlockBase(Properties
   .of(Material.METAL)
@@ -22,6 +24,7 @@ class NekoBlock extends NekoBlockBase(Properties
 object NekoBlock extends NekoObject[NekoBlock] {
   override val ID: String = "neko_block"
 
+  @Singleton
   @Register.AsItem
   class Item extends NekoBlockItemBase(NekoBlock.get)
 
