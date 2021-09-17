@@ -8,7 +8,4 @@ import space.controlnet.lightioc.annotation.Singleton
 
 @Singleton
 class TestItem extends Item(new Properties().tab(NekoToolsTab).stacksTo(16))
-
-object TestItem extends NekoObject[TestItem] {
-  final val ID = "test_item"
-}
+object TestItem extends NekoObject[TestItem]("test_item")

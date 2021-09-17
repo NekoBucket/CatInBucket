@@ -1,4 +1,4 @@
-package org.nekobucket.nekotools.item
+package org.nekobucket.nekotools.item.armor
 
 import net.minecraft.data.ShapedRecipeBuilder
 import net.minecraft.enchantment.Enchantments
@@ -10,10 +10,10 @@ import net.minecraft.world.World
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile
 import org.nekobucket.nekotools.datagen.models.ItemModels
 import org.nekobucket.nekotools.datagen.recipes.{ Recipe, Recipes }
+import org.nekobucket.nekotools.item.NekoIngot
 import org.nekobucket.nekotools.item.level.NekoArmorMaterial
 import org.nekobucket.nekotools.mod.NekoObject
-import org.nekobucket.nekotools.mod.registry.ItemRegistry
-import org.nekobucket.nekotools.mod.registry.Register
+import org.nekobucket.nekotools.mod.registry.{ ItemRegistry, Register }
 import org.nekobucket.nekotools.util.Extensions.{ AnyExt, ItemExt }
 import space.controlnet.lightioc.annotation.Singleton
 
@@ -32,12 +32,12 @@ class CatBoots extends NekoArmorItem(NekoArmorMaterial.NEKO, EquipmentSlotType.F
   }
 }
 
-object CatBoots extends NekoObject[CatBoots] with CatBootsRecipe with CatBootsItemModel {
-  override val ID: String = "cat_boots"
-}
+object CatBoots extends NekoObject[CatBoots]("cat_boots") with CatBootsRecipe with CatBootsItemModel
 
 trait CatBootsRecipe {
-  Recipes +~ Recipe.of("cat_boots_from_crafting") {
+  this: CatBoots.type =>
+
+  Recipes +~ Recipe.of(s"${ID}_from_crafting") {
     ShapedRecipeBuilder.shaped(ItemRegistry.get[CatBoots], 1)
       .pattern("X X")
       .pattern("O O")
@@ -47,8 +47,10 @@ trait CatBootsRecipe {
 }
 
 trait CatBootsItemModel {
+  this: CatBoots.type =>
+
   ItemModels += (_.getBuilder(CatBoots.ID)
     .parent(new UncheckedModelFile("minecraft:item/iron_boots"))
-    .texture("layer0", "item/cat_boots")
+    .texture("layer0", s"item/$ID")
   )
 }

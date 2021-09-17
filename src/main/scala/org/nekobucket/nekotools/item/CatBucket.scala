@@ -5,18 +5,23 @@ import net.minecraft.client.Minecraft
 import net.minecraft.entity.{ EntityType, SpawnReason }
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Item.Properties
-import net.minecraft.item.{ ItemStack, Items }
+import net.minecraft.item.{ ItemModelsProperties, ItemStack, Items }
 import net.minecraft.nbt.CompoundNBT
 import net.minecraft.util.math.{ BlockRayTraceResult, RayTraceResult }
 import net.minecraft.util.{ ActionResult, Hand }
 import net.minecraft.world.World
 import net.minecraft.world.server.ServerWorld
+import net.minecraftforge.client.model.generators.ModelFile
+import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract
 import net.minecraftforge.eventbus.api.SubscribeEvent
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
+import org.nekobucket.nekotools.datagen.models.Predicates.catType
+import org.nekobucket.nekotools.datagen.models.{ ItemModels, itemGenerated }
 import org.nekobucket.nekotools.mod.EventBus.getEventBus
 import org.nekobucket.nekotools.mod.registry.ItemRegistry
 import org.nekobucket.nekotools.mod.registry.Register
-import org.nekobucket.nekotools.mod.{ EventBus, NekoObject }
+import org.nekobucket.nekotools.mod.{ EventBus, MOD_ID, NekoObject }
 import org.nekobucket.nekotools.util.Extensions._
 import space.controlnet.lightioc.annotation.Singleton
 
@@ -50,10 +55,19 @@ class CatBucket extends NekoItemBase(new Properties().stacksTo(1)) {
       )
 }
 
-object CatBucket extends NekoObject[CatBucket] {
-  override val ID: String = "cat_bucket"
-
+object CatBucket extends NekoObject[CatBucket]("cat_bucket") with CatBucketItemModel {
   EventBus.Forge.register(this)
+  EventBus.Mod.addListener(setChangeableModel)
+
+  def setChangeableModel(event: FMLClientSetupEvent): Unit = {
+    event.enqueueWork(new Runnable {
+      override def run(): Unit =
+        ItemModelsProperties.register(ItemRegistry.get[CatBucket], catType, (itemStack, _, _) => {
+          if (itemStack.hasTag) itemStack.getTagElement("cat").getFloat("CatType")
+          else 10F
+        })
+    })
+  }
 
   @SubscribeEvent
   def onBucketRightClick(event: EntityInteract): Unit = if (!event.getWorld.isClientSide) {
@@ -79,10 +93,25 @@ object CatBucket extends NekoObject[CatBucket] {
           nbt.remove("Pos")
           itemStack.addTagElement("cat", nbt)
         }
-      } |> {
-        itemStack => event.getPlayer.addItem(itemStack)
-      }
+      } |> event.getPlayer.addItem
       target.remove()
     }
   }
+}
+
+trait CatBucketItemModel {
+  this: CatBucket.type =>
+
+  private val model10 = s"${ ID }_black"
+
+  private def getPath(id: String) = s"$MOD_ID:item/$id"
+  private def getModelFile(id: String): ModelFile = id |> getPath |> (new UncheckedModelFile(_))
+
+  ItemModels += (_.getBuilder(ID)
+    .parent(itemGenerated)
+    .also(_.`override`().predicate(catType, 10F).model(getModelFile(model10)).end()))
+
+  ItemModels += (_.getBuilder(model10)
+    .parent(itemGenerated)
+    .texture("layer0", getPath(model10)))
 }

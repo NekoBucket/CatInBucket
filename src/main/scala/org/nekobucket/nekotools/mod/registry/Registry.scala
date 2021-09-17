@@ -1,9 +1,10 @@
 package org.nekobucket.nekotools.mod.registry
 
-import org.nekobucket.nekotools.mod.{ EventBus, LOGGER, NekoObject }
+import org.nekobucket.nekotools.mod.{ EventBus, NekoObject }
 import net.minecraftforge.fml.RegistryObject
 import net.minecraftforge.registries.{ DeferredRegister, IForgeRegistryEntry }
 import org.nekobucket.nekotools.util.Extensions.AnyExt
+import org.nekobucket.nekotools.util.event.ItemRegistryEvent
 
 import scala.collection.mutable
 import scala.reflect.ClassTag
@@ -16,7 +17,9 @@ private[registry] trait Registry[T <: IForgeRegistryEntry[T]] {
   private[registry] def register[R <: T](name: String, supplier: NekoObject[R])(implicit tagR: ClassTag[R]): RegistryObject[R] =
     entries.register(name, supplier).also {
       _ => {
-        mappings.addOne(tagR.runtimeClass.getName -> supplier.get)
+        supplier.get
+          .also(obj => mappings.addOne(tagR.runtimeClass.getName -> obj))
+          .also(obj => EventBus.Mod.bus.get.post(new ItemRegistryEvent(obj, name)))
       }
     }
   private[registry] def register[R <: T](nekoObj: NekoObject[R])(implicit tagR: ClassTag[R]): RegistryObject[R] = register[R](nekoObj.ID, nekoObj)(tagR)

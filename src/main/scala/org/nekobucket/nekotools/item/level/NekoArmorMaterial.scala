@@ -48,7 +48,5 @@ sealed abstract class NekoArmorMaterial(
 object NekoArmorMaterial {
   // Attributes follow Leather
   object NEKO extends NekoArmorMaterial("neko", 5, List(1, 2, 3, 1).toArray, 15,
-    SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, new Supplier[Ingredient] {
-      override def get(): Ingredient = Ingredient.of(ItemRegistry.get[NekoIngot])
-    })
+    SoundEvents.ARMOR_EQUIP_LEATHER, 1.0F, 0.0F, () => Ingredient.of(ItemRegistry.get[NekoIngot]))
 }

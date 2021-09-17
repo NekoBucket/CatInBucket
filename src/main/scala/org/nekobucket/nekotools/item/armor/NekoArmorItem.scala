@@ -1,4 +1,4 @@
-package org.nekobucket.nekotools.item
+package org.nekobucket.nekotools.item.armor
 
 import net.minecraft.inventory.EquipmentSlotType
 import net.minecraft.item.Item.Properties

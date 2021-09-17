@@ -3,5 +3,8 @@
   "item.nekotools.test_item": "测试物件",
   "item.nekotools.neko_ingot": "猫猫锭",
   "block.nekotools.neko_block": "猫猫块",
-  "item.nekotools.cat_boots": "猫猫鞋"
+  "item.nekotools.cat_boots": "猫猫鞋",
+  "item.nekotools.cat_chestplate": "猫猫胸甲",
+  "item.nekotools.cat_helmet": "猫猫头盔",
+  "item.nekotools.cat_leggings": "猫猫护腿"
 }

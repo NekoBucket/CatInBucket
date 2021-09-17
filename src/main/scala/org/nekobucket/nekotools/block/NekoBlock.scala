@@ -21,20 +21,17 @@ class NekoBlock extends NekoBlockBase(Properties
   .sound(SoundType.METAL)
 )
 
-object NekoBlock extends NekoObject[NekoBlock] {
-  override val ID: String = "neko_block"
-
+object NekoBlock extends NekoObject[NekoBlock]("neko_block") {
   @Singleton
   @Register.AsItem
   class Item extends NekoBlockItemBase(NekoBlock.get)
-
-  object Item extends NekoObject[NekoBlock.Item] with NekoBlockRecipe with NekoBlockItemModel {
-    override val ID: String = NekoBlock.ID
-  }
+  object Item extends NekoObject[NekoBlock.Item](NekoBlock.ID) with NekoBlockRecipe with NekoBlockItemModel
 }
 
 trait NekoBlockRecipe {
-  Recipes +~ Recipe.of("neko_block_from_crafting_neko_ingot") {
+  this: NekoBlock.Item.type =>
+
+  Recipes +~ Recipe.of(s"${ ID }_from_crafting_neko_ingot") {
     ShapedRecipeBuilder.shaped(ItemRegistry.get[NekoBlock.Item], 1)
       .pattern("XXX")
       .pattern("XXX")
@@ -44,8 +41,10 @@ trait NekoBlockRecipe {
 }
 
 trait NekoBlockItemModel {
+  this: NekoBlock.Item.type =>
+
   ItemModels += (
     _.getBuilder(NekoBlock.ID)
-      .parent(new UncheckedModelFile(s"$MOD_ID:block/${NekoBlock.ID}"))
+      .parent(new UncheckedModelFile(s"$MOD_ID:block/$ID"))
     )
 }

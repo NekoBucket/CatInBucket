@@ -15,12 +15,7 @@ public class TestJavaItem extends Item {
     public static class Factory extends NekoObject<TestJavaItem> {
 
         public Factory(ClassTag<TestJavaItem> classTag) {
-            super(classTag);
-        }
-
-        @Override
-        public String ID() {
-            return  "test_java_item";
+            super("test_java_item", classTag);
         }
     }
 }

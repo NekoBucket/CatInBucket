@@ -4,6 +4,7 @@ import net.minecraft.block.Blocks
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import net.minecraftforge.fml.event.lifecycle._
 import org.nekobucket.nekotools.mod.EventBus.getEventBus
+import org.nekobucket.nekotools.util.event.ItemRegistryEvent
 
 import java.util.stream.Collectors
 
@@ -27,6 +28,12 @@ trait ModLoadingLogger {
 
   @SubscribeEvent
   def onFinished(event: FMLLoadCompleteEvent): Unit = {
-    LOGGER.info("Loading finished")
+    LOGGER.info(s"$MOD_NAME: loading finished")
+  }
+
+  // custom event
+  @SubscribeEvent
+  def onRegisterItem(event: ItemRegistryEvent): Unit = {
+    LOGGER.info(s"Register item: ${event.name}")
   }
 }

@@ -1,7 +1,7 @@
 package org.nekobucket.nekotools
 
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.eventbus.api.IEventBus
+import net.minecraftforge.eventbus.api.{ Event, IEventBus }
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber
 import org.apache.logging.log4j.LogManager
 
@@ -9,7 +9,7 @@ import scala.language.implicitConversions
 
 package object mod {
   final val MOD_ID = "nekotools"
-  final val MOD_NAME = "Neko Tools"
+  final val MOD_NAME = "NekoTools"
   final val PACKAGE_NAME = "org.nekobucket.nekotools"
   final val LOGGER = LogManager.getLogger(MOD_ID)
 

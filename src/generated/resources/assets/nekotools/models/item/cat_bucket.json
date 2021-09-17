@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "predicate": {
+        "nekotools:cat_type": 10.0
+      },
+      "model": "nekotools:item/cat_bucket_black"
+    }
+  ]
+}
