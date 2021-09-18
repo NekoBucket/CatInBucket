@@ -60,13 +60,11 @@ object CatBucket extends NekoObject[CatBucket]("cat_bucket") with CatBucketItemM
   EventBus.Mod.addListener(setChangeableModel)
 
   def setChangeableModel(event: FMLClientSetupEvent): Unit = {
-    event.enqueueWork(new Runnable {
-      override def run(): Unit =
-        ItemModelsProperties.register(ItemRegistry.get[CatBucket], catType, (itemStack, _, _) => {
-          if (itemStack.hasTag) itemStack.getTagElement("cat").getFloat("CatType")
-          else 10F
-        })
+    val func = () => ItemModelsProperties.register(ItemRegistry.get[CatBucket], catType, (itemStack, _, _) => {
+      if (itemStack.hasTag) itemStack.getTagElement("cat").getFloat("CatType")
+      else 10F
     })
+    event.enqueueWork(func)
   }
 
   @SubscribeEvent

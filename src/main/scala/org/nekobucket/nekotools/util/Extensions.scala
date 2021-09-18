@@ -2,6 +2,8 @@ package org.nekobucket.nekotools.util
 
 import net.minecraft.item.{ Item, ItemStack }
 
+import scala.language.implicitConversions
+
 
 object Extensions {
   implicit class ItemExt(item: Item) {
@@ -21,6 +23,10 @@ object Extensions {
       f(x)
       x
     }
+  }
+
+  implicit def actionToRunnable(f: () => Unit): Runnable = new Runnable {
+    override def run(): Unit = f()
   }
 
   implicit class ItemStackExt(itemStack: ItemStack) {
