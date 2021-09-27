@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "nekotools:item/cat_bucket_tabby"
+  }
+}

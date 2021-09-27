@@ -25,10 +25,6 @@ object Extensions {
     }
   }
 
-  implicit def actionToRunnable(f: () => Unit): Runnable = new Runnable {
-    override def run(): Unit = f()
-  }
-
   implicit class ItemStackExt(itemStack: ItemStack) {
     // adjust count in ItemStack
     def addCount(n: Int): ItemStack = {

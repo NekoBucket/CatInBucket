@@ -19,6 +19,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
 import org.nekobucket.nekotools.datagen.models.Predicates.catType
 import org.nekobucket.nekotools.datagen.models.{ ItemModels, itemGenerated }
 import org.nekobucket.nekotools.mod.EventBus.getEventBus
+import org.nekobucket.nekotools.mod.exception.CatTypeNotFoundException
 import org.nekobucket.nekotools.mod.registry.ItemRegistry
 import org.nekobucket.nekotools.mod.registry.Register
 import org.nekobucket.nekotools.mod.{ EventBus, MOD_ID, NekoObject }
@@ -60,7 +61,7 @@ object CatBucket extends NekoObject[CatBucket]("cat_bucket") with CatBucketItemM
   EventBus.Mod.addListener(setChangeableModel)
 
   def setChangeableModel(event: FMLClientSetupEvent): Unit = {
-    val func = () => ItemModelsProperties.register(ItemRegistry.get[CatBucket], catType, (itemStack, _, _) => {
+    val func: Runnable = () => ItemModelsProperties.register(ItemRegistry.get[CatBucket], catType, (itemStack, _, _) => {
       if (itemStack.hasTag) itemStack.getTagElement("cat").getFloat("CatType")
       else 10F
     })
@@ -100,16 +101,49 @@ object CatBucket extends NekoObject[CatBucket]("cat_bucket") with CatBucketItemM
 trait CatBucketItemModel {
   this: CatBucket.type =>
 
-  private val model10 = s"${ ID }_black"
+  private sealed abstract class CatType(val model: String)
+  private object CatType {
+    object Tabby extends CatType(s"${ ID }_tabby")
+    object Tuxedo extends CatType(s"${ ID }_black")
+    object Red extends CatType(s"${ ID }_red")
+    object Siamese extends CatType(s"${ ID }_siamese")
+    object BritishShorthair extends CatType(s"${ ID }_british_shorthair")
+    object Calico extends CatType(s"${ ID }_calico")
+    object Persian extends CatType(s"${ ID }_persian")
+    object Ragdoll extends CatType(s"${ ID }_ragdoll")
+    object White extends CatType(s"${ ID }_white")
+    object Jellie extends CatType(s"${ ID }_jellie")
+    object Black extends CatType(s"${ ID }_all_black")
+
+    val get: Float => CatType = {
+      case 0F => Tabby
+      case 1F => Tuxedo
+      case 2F => Red
+      case 3F => Siamese
+      case 4F => BritishShorthair
+      case 5F => Calico
+      case 6F => Persian
+      case 7F => Ragdoll
+      case 8F => White
+      case 9F => Jellie
+      case 10F => Black
+      case _ => throw CatTypeNotFoundException()
+    }
+  }
 
   private def getPath(id: String) = s"$MOD_ID:item/$id"
   private def getModelFile(id: String): ModelFile = id |> getPath |> (new UncheckedModelFile(_))
 
-  ItemModels += (_.getBuilder(ID)
-    .parent(itemGenerated)
-    .also(_.`override`().predicate(catType, 10F).model(getModelFile(model10)).end()))
+  (0 to 10).map(_.toFloat)
+    .foreach { nbtValue =>
+      val model = CatType.get(nbtValue).model
 
-  ItemModels += (_.getBuilder(model10)
-    .parent(itemGenerated)
-    .texture("layer0", getPath(model10)))
+      ItemModels += (_.getBuilder(ID)
+        .parent(itemGenerated)
+        .also(_.`override`().predicate(catType, nbtValue).model(getModelFile(model)).end()))
+
+      ItemModels += (_.getBuilder(model)
+        .parent(itemGenerated)
+        .texture("layer0", getPath(model)))
+    }
 }

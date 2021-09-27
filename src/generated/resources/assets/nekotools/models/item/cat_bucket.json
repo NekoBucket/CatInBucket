@@ -3,9 +3,69 @@
   "overrides": [
     {
       "predicate": {
-        "nekotools:cat_type": 10.0
+        "nekotools:cat_type": 0.0
+      },
+      "model": "nekotools:item/cat_bucket_tabby"
+    },
+    {
+      "predicate": {
+        "nekotools:cat_type": 1.0
       },
       "model": "nekotools:item/cat_bucket_black"
+    },
+    {
+      "predicate": {
+        "nekotools:cat_type": 2.0
+      },
+      "model": "nekotools:item/cat_bucket_red"
+    },
+    {
+      "predicate": {
+        "nekotools:cat_type": 3.0
+      },
+      "model": "nekotools:item/cat_bucket_siamese"
+    },
+    {
+      "predicate": {
+        "nekotools:cat_type": 4.0
+      },
+      "model": "nekotools:item/cat_bucket_british_shorthair"
+    },
+    {
+      "predicate": {
+        "nekotools:cat_type": 5.0
+      },
+      "model": "nekotools:item/cat_bucket_calico"
+    },
+    {
+      "predicate": {
+        "nekotools:cat_type": 6.0
+      },
+      "model": "nekotools:item/cat_bucket_persian"
+    },
+    {
+      "predicate": {
+        "nekotools:cat_type": 7.0
+      },
+      "model": "nekotools:item/cat_bucket_ragdoll"
+    },
+    {
+      "predicate": {
+        "nekotools:cat_type": 8.0
+      },
+      "model": "nekotools:item/cat_bucket_white"
+    },
+    {
+      "predicate": {
+        "nekotools:cat_type": 9.0
+      },
+      "model": "nekotools:item/cat_bucket_jellie"
+    },
+    {
+      "predicate": {
+        "nekotools:cat_type": 10.0
+      },
+      "model": "nekotools:item/cat_bucket_all_black"
     }
   ]
 }

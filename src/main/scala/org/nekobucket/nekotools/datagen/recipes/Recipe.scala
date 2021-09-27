@@ -1,10 +1,11 @@
 package org.nekobucket.nekotools.datagen.recipes
 
-import org.nekobucket.nekotools.mod.{ LOGGER, MOD_ID, getResourceLocation }
+import org.nekobucket.nekotools.mod.{ MOD_ID, getResourceLocation }
 import org.nekobucket.nekotools.util.Extensions._
 import net.minecraft.advancements.criterion.InventoryChangeTrigger
 import net.minecraft.block.Blocks
 import net.minecraft.data._
+import org.nekobucket.nekotools.mod.exception.RecipeTypeNotFoundException
 
 import java.util.function.Consumer
 
@@ -33,6 +34,6 @@ object Recipe {
     case b: SmithingRecipeBuilder => b.save(_, getResourceLocation(id))
     case b: SingleItemRecipeBuilder => b.save(_, getResourceLocation(id))
     case b: CustomRecipeBuilder => b.save(_, id)
-    case _ => throw RecipeTypeNotFoundException
+    case _ => throw RecipeTypeNotFoundException()
   }
 }
