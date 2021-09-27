@@ -5,10 +5,10 @@ import net.minecraft.client.Minecraft
 import net.minecraft.entity.{ EntityType, SpawnReason }
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Item.Properties
-import net.minecraft.item.{ ItemModelsProperties, ItemStack, Items }
+import net.minecraft.item.{ ItemGroup, ItemModelsProperties, ItemStack, Items }
 import net.minecraft.nbt.CompoundNBT
 import net.minecraft.util.math.{ BlockRayTraceResult, RayTraceResult }
-import net.minecraft.util.{ ActionResult, Hand }
+import net.minecraft.util.{ ActionResult, Hand, NonNullList }
 import net.minecraft.world.World
 import net.minecraft.world.server.ServerWorld
 import net.minecraftforge.client.model.generators.ModelFile
@@ -54,6 +54,15 @@ class CatBucket extends NekoItemBase(new Properties().stacksTo(1)) {
       }
       else ActionResult.success(itemStack)
       )
+
+  override def fillItemCategory(group: ItemGroup, items: NonNullList[ItemStack]): Unit = {
+    (0 to 10).map(_.toFloat)
+      .foreach { nbtValue =>
+        items.add(this.toItemStack.also {
+          _.addTagElement("cat", new CompoundNBT().also(_.putFloat("CatType", nbtValue)))
+        })
+      }
+  }
 }
 
 object CatBucket extends NekoObject[CatBucket]("cat_bucket") with CatBucketItemModel {
