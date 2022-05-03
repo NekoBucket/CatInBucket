@@ -1,8 +1,8 @@
-name: Build Test
+name: Build Test 1.18
 on:
   push:
-    branches-ignore:
-      - "1.16.5/master"
+    branches:
+      - "1.18.2/dev"
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        jvm: ["8", "11", "14"]
+        jvm: ["17"]
         distribution: ["adopt"]
 
     name: Test Build on JDK ${{ matrix.jvm }}
@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        jvm: ["8", "11", "14"]
+        jvm: ["17"]
         distribution: ["adopt"]
 
     name: Test Data Generation on JDK ${{ matrix.jvm }}

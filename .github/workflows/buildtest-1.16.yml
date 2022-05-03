@@ -1,0 +1,65 @@
+name: Build Test 1.16
+on:
+  push:
+    branches:
+      - "1.16.5/dev"
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        jvm: ["8", "11", "14"]
+        distribution: ["adopt"]
+
+    name: Test Build on JDK ${{ matrix.jvm }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK ${{matrix.jvm}}
+        uses: actions/setup-java@v2
+        with:
+          distribution: ${{ matrix.distribution }}
+          java-version: ${{ matrix.jvm }}
+          cache: "gradle"
+
+      - name: Build with Gradle
+        run: |
+          chmod 777 ./gradlew
+          ./gradlew build --no-daemon
+
+
+  datagen:
+    needs: [build]
+    runs-on: ubuntu-20.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        jvm: ["8", "11", "14"]
+        distribution: ["adopt"]
+
+    name: Test Data Generation on JDK ${{ matrix.jvm }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK ${{ matrix.jvm }}
+        uses: actions/setup-java@v2
+        with:
+          distribution: ${{ matrix.distribution }}
+          java-version: ${{ matrix.jvm }}
+          cache: "gradle"
+
+      - name: Build with Gradle
+        run: |
+          chmod 777 ./gradlew
+          ./gradlew build --no-daemon
+
+      - name: Prepare Run Data
+        run: ./gradlew prepareRunData --no-daemon
+
+      - name: Run Datagen
+        run: ./gradlew runData --no-daemon

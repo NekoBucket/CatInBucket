@@ -15,21 +15,9 @@ class Recipe(func: Recipe.RecipeFunc) {
 object Recipe {
   type RecipeFunc = Consumer[FinishedRecipe] => Unit
 
-  def of(id: String)(builder: => RecipeBuilder): Recipe = matchBuilder(id, builder) |> (new Recipe(_))
+  def of(id: String)(builder: => RecipeBuilder): Recipe = buildRecipe(id, builder) |> (new Recipe(_))
 
-  def matchBuilder(id: String, builder: RecipeBuilder): RecipeFunc = builder match {
-    case b: ShapedRecipeBuilder => b.group(MOD_ID)
-      .unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
-      .save(_, getResourceLocation(id))
-
-    case b: ShapelessRecipeBuilder => b.group(MOD_ID)
-      .unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
-      .save(_, getResourceLocation(id))
-
-    case b: SimpleCookingRecipeBuilder => b
-      .unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
-      .save(_, getResourceLocation(id))
-
-    case b: SingleItemRecipeBuilder => b.save(_, getResourceLocation(id))
-  }
+  def buildRecipe(id: String, builder: RecipeBuilder): RecipeFunc = builder.group(MOD_ID)
+    .unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+    .save(_, getResourceLocation(id))
 }
