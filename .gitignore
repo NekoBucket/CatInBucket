@@ -25,3 +25,7 @@ cache
 
 # Files from Forge MDK
 forge*changelog.txt
+
+# LightIoC path
+/src/main/java/space
+/src/main/scala/space

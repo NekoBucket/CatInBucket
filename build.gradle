@@ -29,17 +29,21 @@ println "Starting build of ${archivesBaseName}, Version: ${project.mc_version}"
 println "Group: ${group}"
 println "Using Forge: ${project.forge_version}, for Minecraft: ${project.mc_version}"
 
-// set to target Java 8
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+// set to target Java 17
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 idea {
-    targetVersion = "1.8"
+    targetVersion = "17"
     module {
         for (String excludeDirName in ["run", "out", "logs", "gradle"]) {
             File excludeDir = new File(projectDir, excludeDirName)
             excludeDirs.add(excludeDir)
         }
     }
+}
+
+javadoc {
+    options.encoding = 'UTF-8'
 }
 
 // add scala compile options
@@ -54,7 +58,7 @@ minecraft {
     // Use official mapping due to
     // https://mcforge.readthedocs.io/en/1.16.x/gettingstarted/#migration-to-mojangs-official-mappings
     mappings channel: "$project.mapping_channel", version: project.mapping_version
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
     runs {
@@ -65,7 +69,7 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
             mods {
-                nekotools {
+                catinbucket {
                     source sourceSets.main
                 }
             }
@@ -78,7 +82,7 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
             mods {
-                nekotools {
+                catinbucket {
                     source sourceSets.main
                 }
             }
@@ -94,7 +98,7 @@ minecraft {
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             args '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
             mods {
-                nekotools {
+                catinbucket {
                     source sourceSets.main
                 }
             }
@@ -109,13 +113,21 @@ sourceSets.main.resources {
 sourceSets.main.scala.srcDir "src/main/java"
 sourceSets.main.java.srcDirs = []
 
+
+configurations {
+    implementation.extendsFrom(shadow)
+}
+
 repositories {
     // SLP
     maven {
         name = "Azure-SLP"
         url = "https://pkgs.dev.azure.com/Kotori316/minecraft/_packaging/mods/maven/v1"
         content {
-            includeModule("com.kotori316", "ScalableCatsForce".toLowerCase())
+            it.includeModule("com.kotori316", "ScalableCatsForce".toLowerCase())
+            it.includeModule("com.kotori316", "ScalableCatsForce-MixIn".toLowerCase())
+            it.includeModule("org.typelevel", "cats-core_2.13")
+            it.includeModule("org.typelevel", "cats-kernel_2.13")
         }
     }
 
@@ -125,28 +137,19 @@ repositories {
         url = "https://www.cursemaven.com"
 
         content {
-            includeGroup "curse.maven"
+            it.includeGroup("curse.maven")
         }
     }
 
     mavenCentral()
-
-    // snapshots
-    maven {
-        name = "MavenCentral Snapshot"
-        url = "https://s01.oss.sonatype.org/content/repositories/snapshots"
-
-        content {
-            includeGroup "space.controlnet"
-        }
-    }
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${project.mc_version}-${project.forge_version}"
-    implementation group: "org.scala-lang", name: "scala-library", version: project.scala_version
-    api group: 'com.kotori316', name: 'ScalableCatsForce'.toLowerCase(Locale.ROOT), version: project.slp_version, classifier: 'dev'
-    implementation group: "space.controlnet", name: "lightioc_2.13", version: project.lightioc_version
+    minecraft("net.minecraftforge:forge:${project.mc_version}-${project.forge_version}")
+    compileOnly(group: "org.scala-lang", name: "scala-library", version: project.scala_version)
+    runtimeOnly(group: 'com.kotori316', name: 'ScalableCatsForce'.toLowerCase(Locale.ROOT), version: project.slp_version, classifier: 'with-library') {
+        transitive(false)
+    }
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
@@ -161,6 +164,11 @@ jar {
             "Implementation-Vendor"   : project.vender_name,
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
     ])
+
+    from {
+        configurations.shadow.collect { file -> file.isDirectory() ? file : zipTree(file) }
+    }
+
 }
 
 // Example configuration to allow publishing using the maven-publish task

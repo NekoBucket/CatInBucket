@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "catinbucket",
+  "ingredients": [
+    {
+      "item": "catinbucket:cat_block"
+    }
+  ],
+  "result": {
+    "item": "catinbucket:cat_ingot",
+    "count": 9
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "predicate": {
+        "catinbucket:cat_type": 0.0
+      },
+      "model": "catinbucket:item/cat_bucket_tabby"
+    },
+    {
+      "predicate": {
+        "catinbucket:cat_type": 1.0
+      },
+      "model": "catinbucket:item/cat_bucket_black"
+    },
+    {
+      "predicate": {
+        "catinbucket:cat_type": 2.0
+      },
+      "model": "catinbucket:item/cat_bucket_red"
+    },
+    {
+      "predicate": {
+        "catinbucket:cat_type": 3.0
+      },
+      "model": "catinbucket:item/cat_bucket_siamese"
+    },
+    {
+      "predicate": {
+        "catinbucket:cat_type": 4.0
+      },
+      "model": "catinbucket:item/cat_bucket_british_shorthair"
+    },
+    {
+      "predicate": {
+        "catinbucket:cat_type": 5.0
+      },
+      "model": "catinbucket:item/cat_bucket_calico"
+    },
+    {
+      "predicate": {
+        "catinbucket:cat_type": 6.0
+      },
+      "model": "catinbucket:item/cat_bucket_persian"
+    },
+    {
+      "predicate": {
+        "catinbucket:cat_type": 7.0
+      },
+      "model": "catinbucket:item/cat_bucket_ragdoll"
+    },
+    {
+      "predicate": {
+        "catinbucket:cat_type": 8.0
+      },
+      "model": "catinbucket:item/cat_bucket_white"
+    },
+    {
+      "predicate": {
+        "catinbucket:cat_type": 9.0
+      },
+      "model": "catinbucket:item/cat_bucket_jellie"
+    },
+    {
+      "predicate": {
+        "catinbucket:cat_type": 10.0
+      },
+      "model": "catinbucket:item/cat_bucket_all_black"
+    }
+  ]
+}

@@ -1,11 +1,11 @@
 modLoader="kotori_scala"
-loaderVersion="[2.13.3, 2.14)"
+loaderVersion="[2.13.8-build-1, 3.0)"
 license="AGPL-3.0"
-issueTrackerURL="https://github.com/NekoBucket/NekoTools/issues"
+issueTrackerURL="https://github.com/NekoBucket/CatInBucket/issues"
 [[mods]]
-modId="nekotools"
+modId="catinbucket"
 version="${file.jarVersion}"
-displayName="Neko Tools"
+displayName="Cat in Bucket"
 authors="NekoBucket"
 description='''
 A util mods for vanilla Minecraft.
@@ -20,21 +20,21 @@ A util mods for vanilla Minecraft.
 #credits="Aknowledges ..." #optional
 # The description text for the mod (multi line!) (#mandatory)
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.nekotools]]
+[[dependencies.catinbucket]]
 modId="forge" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
 mandatory=true #mandatory
 # The version range of the dependency
-versionRange="[36,)" #mandatory
+versionRange="[40,)" #mandatory
 # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
 ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT or SERVER
 side="BOTH"
 # Here's another dependency
-[[dependencies.nekotools]]
+[[dependencies.catinbucket]]
 modId="minecraft"
 mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-versionRange="[1.16.5,1.17)"
+versionRange="[1.18, 1.19)"
 ordering="NONE"
 side="BOTH"

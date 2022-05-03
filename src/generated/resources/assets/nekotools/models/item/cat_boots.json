@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/iron_boots",
-  "textures": {
-    "layer0": "nekotools:item/cat_boots"
-  }
-}
