@@ -6,6 +6,6 @@ import org.nekobucket.catinbucket.mod.MOD_ID
 import org.nekobucket.catinbucket.mod.registry.Registry
 import org.nekobucket.catinbucket.util.Extensions._
 
-object ModTab extends CreativeModeTab(MOD_ID){
+object MainTab extends CreativeModeTab(MOD_ID){
   override def makeIcon(): ItemStack = Registry.get[CatBlock.Item].toItemStack
 }

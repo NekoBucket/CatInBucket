@@ -18,11 +18,11 @@ import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
-import org.nekobucket.catinbucket.datagen.models.Predicates.catType
+import org.nekobucket.catinbucket.mod.Predicates.catType
 import org.nekobucket.catinbucket.datagen.models.{ ItemModels, itemGenerated }
 import org.nekobucket.catinbucket.mod.EventBus.getEventBus
 import org.nekobucket.catinbucket.mod.exception.CatTypeNotFoundException
-import org.nekobucket.catinbucket.mod.registry.{ ItemRegistry, Register, Registry }
+import org.nekobucket.catinbucket.mod.registry.{ Register, Registry }
 import org.nekobucket.catinbucket.mod.{ BaseObject, EventBus, MOD_ID }
 import org.nekobucket.catinbucket.util.Extensions._
 

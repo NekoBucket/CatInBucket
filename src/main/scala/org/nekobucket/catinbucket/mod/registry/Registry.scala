@@ -29,14 +29,14 @@ object Registry {
    * Get object by type. It requires predefined fields in RegistryObjects.
    * @note Only works after registration
    */
-  private[catinbucket] def get[T](implicit tagV: ClassTag[T]): T = {
-    val fields = tagV.runtimeClass match {
+  private[catinbucket] def get[T](implicit tagT: ClassTag[T]): T = {
+    val fields = tagT.runtimeClass match {
       case cls if classOf[Item].isAssignableFrom(cls) => classOf[ItemRegistryObjects].getDeclaredFields
       case cls if classOf[Block].isAssignableFrom(cls) => classOf[BlockRegistryObjects].getDeclaredFields
     }
 
     fields.map(f => (f, f.getType))
-      .filter(_._2 == tagV.runtimeClass)
+      .filter(_._2 == tagT.runtimeClass)
       .map(_._1)
       .map { field =>
         field.setAccessible(true)
@@ -45,9 +45,9 @@ object Registry {
       .ifElse[T](_.length > 0)({
         _.head.asInstanceOf[T]
       }, {
-        _ => throw RequestRegistryError(s"item ${tagV.runtimeClass.getName} not found in RegistryObjects")
+        _ => throw RequestRegistryError(s"item ${tagT.runtimeClass.getName} not found in RegistryObjects")
       }) match {
-      case null => throw RequestRegistryError(s"item ${tagV.runtimeClass.getName} not injected")
+      case null => throw RequestRegistryError(s"item ${tagT.runtimeClass.getName} not injected")
       case value => value
     }
   }
