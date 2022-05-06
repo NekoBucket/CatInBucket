@@ -22,8 +22,8 @@ import org.nekobucket.catinbucket.datagen.models.Predicates.catType
 import org.nekobucket.catinbucket.datagen.models.{ ItemModels, itemGenerated }
 import org.nekobucket.catinbucket.mod.EventBus.getEventBus
 import org.nekobucket.catinbucket.mod.exception.CatTypeNotFoundException
-import org.nekobucket.catinbucket.mod.registry.{ ItemRegistry, Register }
-import org.nekobucket.catinbucket.mod.{ EventBus, MOD_ID, BaseObject }
+import org.nekobucket.catinbucket.mod.registry.{ ItemRegistry, Register, Registry }
+import org.nekobucket.catinbucket.mod.{ BaseObject, EventBus, MOD_ID }
 import org.nekobucket.catinbucket.util.Extensions._
 
 @Register.AsItem
@@ -67,7 +67,7 @@ object CatBucket extends BaseObject[CatBucket]("cat_bucket") with CatBucketItemM
   EventBus.Mod.addListener(setChangeableModel)
 
   def setChangeableModel(event: FMLClientSetupEvent): Unit = {
-    val func: Runnable = () => ItemProperties.register(ItemRegistry.get[CatBucket], catType, (itemStack, _, _, _) => {
+    val func: Runnable = () => ItemProperties.register(Registry.get[CatBucket], catType, (itemStack, _, _, _) => {
       if (itemStack.hasTag) itemStack.getTagElement("cat").getFloat("CatType")
       else 10F
     })
@@ -85,7 +85,7 @@ object CatBucket extends BaseObject[CatBucket]("cat_bucket") with CatBucketItemM
       useBucket && targetCat
     }) {
       itemStack -= 1
-      ItemRegistry.get[CatBucket].toItemStack.also {
+      Registry.get[CatBucket].toItemStack.also {
         itemStack => {
           val nbt = new CompoundTag().also(target.saveWithoutId)
           nbt.putString("Owner", event.getPlayer.getName.getString)

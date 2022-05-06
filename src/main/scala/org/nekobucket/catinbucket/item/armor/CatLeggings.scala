@@ -9,7 +9,7 @@ import org.nekobucket.catinbucket.datagen.recipes.{ Recipe, Recipes }
 import org.nekobucket.catinbucket.item.CatIngot
 import org.nekobucket.catinbucket.item.level.BaseArmorMaterial
 import org.nekobucket.catinbucket.mod.BaseObject
-import org.nekobucket.catinbucket.mod.registry.{ ItemRegistry, Register }
+import org.nekobucket.catinbucket.mod.registry.{ ItemRegistry, Register, Registry }
 
 @Register.AsItem
 case class CatLeggings() extends BaseArmorItem(BaseArmorMaterial.CAT, EquipmentSlot.LEGS)
@@ -20,12 +20,12 @@ trait CatLeggingsRecipe {
   this: CatLeggings.type =>
 
   Recipes +~ Recipe.of(s"${ID}_from_crafting") {
-    ShapedRecipeBuilder.shaped(ItemRegistry.get[CatLeggings], 1)
+    ShapedRecipeBuilder.shaped(Registry.get[CatLeggings], 1)
       .pattern("OOO")
       .pattern("O O")
       .pattern("X X")
       .define('X', Items.LEATHER)
-      .define('O', ItemRegistry.get[CatIngot])
+      .define('O', Registry.get[CatIngot])
   }
 }
 

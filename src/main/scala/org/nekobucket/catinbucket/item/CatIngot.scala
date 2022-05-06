@@ -7,8 +7,7 @@ import org.nekobucket.catinbucket.block.CatBlock
 import org.nekobucket.catinbucket.datagen.models.{ ItemModels, itemGenerated }
 import org.nekobucket.catinbucket.datagen.recipes.{ Recipe, Recipes }
 import org.nekobucket.catinbucket.mod.BaseObject
-import org.nekobucket.catinbucket.mod.registry.ItemRegistry
-import org.nekobucket.catinbucket.mod.registry.Register
+import org.nekobucket.catinbucket.mod.registry.{ ItemRegistry, Register, Registry }
 
 @Register.AsItem
 case class CatIngot() extends BaseItem
@@ -19,7 +18,7 @@ trait CatIngotRecipe {
   this: CatIngot.type =>
 
   Recipes +~ Recipe.of(s"${ID}_from_crafting_3fish_1iron") {
-    ShapedRecipeBuilder.shaped(ItemRegistry.get[CatIngot], 1)
+    ShapedRecipeBuilder.shaped(Registry.get[CatIngot], 1)
       .pattern("XXX")
       .pattern(" O ")
       .define('X', Ingredient.of(Items.COD, Items.SALMON, Items.TROPICAL_FISH, Items.PUFFERFISH,
@@ -29,8 +28,8 @@ trait CatIngotRecipe {
   }
 
   Recipes +~ Recipe.of(s"${ID}_from_crafting_${CatBlock.ID}") {
-    ShapelessRecipeBuilder.shapeless(ItemRegistry.get[CatIngot], 9)
-      .requires(ItemRegistry.get[CatBlock.Item], 1)
+    ShapelessRecipeBuilder.shapeless(Registry.get[CatIngot], 9)
+      .requires(Registry.get[CatBlock.Item], 1)
   }
 
 }

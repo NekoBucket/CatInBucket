@@ -13,7 +13,7 @@ import org.nekobucket.catinbucket.datagen.recipes.{ Recipe, Recipes }
 import org.nekobucket.catinbucket.item.CatIngot
 import org.nekobucket.catinbucket.item.level.BaseArmorMaterial
 import org.nekobucket.catinbucket.mod.BaseObject
-import org.nekobucket.catinbucket.mod.registry.{ ItemRegistry, Register }
+import org.nekobucket.catinbucket.mod.registry.{ ItemRegistry, Register, Registry }
 import org.nekobucket.catinbucket.util.Extensions.{ AnyExt, ItemExt }
 
 @Register.AsItem
@@ -36,11 +36,11 @@ trait CatBootsRecipe {
   this: CatBoots.type =>
 
   Recipes +~ Recipe.of(s"${ID}_from_crafting") {
-    ShapedRecipeBuilder.shaped(ItemRegistry.get[CatBoots], 1)
+    ShapedRecipeBuilder.shaped(Registry.get[CatBoots], 1)
       .pattern("X X")
       .pattern("O O")
       .define('X', Items.LEATHER)
-      .define('O', ItemRegistry.get[CatIngot])
+      .define('O', Registry.get[CatIngot])
   }
 }
 

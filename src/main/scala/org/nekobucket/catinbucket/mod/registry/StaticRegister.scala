@@ -25,7 +25,9 @@ private[catinbucket] abstract class StaticRegister[T <: IForgeRegistryEntry[T] :
         tag.runtimeClass.asInstanceOf[Class[R]]
       ))
 
-  // Get pairs for matched annotation
+  /**
+   * Get pairs for matched annotation
+    */
   protected lazy val pairs: List[(Class[_ <: T], Class[_ <: Annotation])] = getAnnotatedClassPairs
 
   protected def getCompanionObject(cls: Class[_ <: T]): BaseObject[T] = {

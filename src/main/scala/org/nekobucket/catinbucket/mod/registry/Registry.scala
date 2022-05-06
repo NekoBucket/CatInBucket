@@ -21,9 +21,15 @@ private[registry] trait Registry[T <: IForgeRegistryEntry[T]] {
     }
   private[registry] def register[R <: T](baseObj: BaseObject[R])(implicit tagR: ClassTag[R]): RegistryObject[R] = register[R](baseObj.ID, baseObj)(tagR)
   private[catinbucket] def register(): Unit = entries.register(EventBus.Mod)
+}
 
-  /* Caution: Only works after registration */
-  private[catinbucket] def get[V <: T](implicit tagV: ClassTag[V]): V = {
+object Registry {
+
+  /**
+   * Get object by type. It requires predefined fields in RegistryObjects.
+   * @note Only works after registration
+   */
+  private[catinbucket] def get[T](implicit tagV: ClassTag[T]): T = {
     val fields = tagV.runtimeClass match {
       case cls if classOf[Item].isAssignableFrom(cls) => classOf[ItemRegistryObjects].getDeclaredFields
       case cls if classOf[Block].isAssignableFrom(cls) => classOf[BlockRegistryObjects].getDeclaredFields
@@ -36,8 +42,8 @@ private[registry] trait Registry[T <: IForgeRegistryEntry[T]] {
         field.setAccessible(true)
         field.get(this)
       }
-      .ifElse[V](_.length > 0)({
-        _.head.asInstanceOf[V]
+      .ifElse[T](_.length > 0)({
+        _.head.asInstanceOf[T]
       }, {
         _ => throw RequestRegistryError(s"item ${tagV.runtimeClass.getName} not found in RegistryObjects")
       }) match {

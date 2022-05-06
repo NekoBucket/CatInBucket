@@ -7,10 +7,10 @@ trait ModInitializer {
   // scan and register annotated
   BlockRegistry.init()
   ItemRegistry.init()
-  LOGGER.info("CatInBucket: Annotation scanned")
+  LOGGER.info(s"$MOD_NAME: Annotation scanned")
 
   // register to minecraft
   BlockRegistry.register()
   ItemRegistry.register()
-  LOGGER.info("CatInBucket: Items registered")
+  LOGGER.info(s"$MOD_NAME: Items registered")
 }

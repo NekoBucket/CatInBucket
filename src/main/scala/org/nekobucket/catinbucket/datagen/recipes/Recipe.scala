@@ -1,10 +1,10 @@
 package org.nekobucket.catinbucket.datagen.recipes
 
 import net.minecraft.advancements.critereon.InventoryChangeTrigger
+import net.minecraft.data.recipes.{ FinishedRecipe, RecipeBuilder }
+import net.minecraft.world.level.block.Blocks
 import org.nekobucket.catinbucket.mod.{ MOD_ID, getResourceLocation }
 import org.nekobucket.catinbucket.util.Extensions._
-import net.minecraft.world.level.block.Blocks
-import net.minecraft.data.recipes.{ FinishedRecipe, RecipeBuilder, ShapedRecipeBuilder, ShapelessRecipeBuilder, SimpleCookingRecipeBuilder, SingleItemRecipeBuilder }
 
 import java.util.function.Consumer
 
