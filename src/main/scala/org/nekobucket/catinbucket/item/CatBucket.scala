@@ -20,14 +20,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
 import org.nekobucket.catinbucket.mod.Predicates.catType
 import org.nekobucket.catinbucket.datagen.models.{ ItemModels, itemGenerated }
-import org.nekobucket.catinbucket.mod.EventBus.getEventBus
+import org.nekobucket.catinbucket.util.EventBus.getEventBus
 import org.nekobucket.catinbucket.mod.exception.CatTypeNotFoundException
 import org.nekobucket.catinbucket.mod.registry.{ Register, Registry }
-import org.nekobucket.catinbucket.mod.{ BaseObject, EventBus, MOD_ID }
+import org.nekobucket.catinbucket.mod.{ BaseObject, MOD_ID }
+import org.nekobucket.catinbucket.util.EventBus
 import org.nekobucket.catinbucket.util.Extensions._
 
 @Register.AsItem
-case class CatBucket() extends BaseItem(new Properties().stacksTo(1)) {
+case class CatBucket protected() extends BaseItem(new Properties().stacksTo(1)) {
 
   override def use(world: Level, player: Player, hand: InteractionHand): InteractionResultHolder[ItemStack] =
     player.getItemInHand(hand) |> (itemStack =>
@@ -42,14 +43,9 @@ case class CatBucket() extends BaseItem(new Properties().stacksTo(1)) {
               .also(catEntity.load)
             itemStack -= 1
             InteractionResultHolder.consume(itemStack)
-          } else {
-            InteractionResultHolder.pass(itemStack)
-          }
-        } else {
-          InteractionResultHolder.pass(itemStack)
-        }
-      }
-      else InteractionResultHolder.success(itemStack)
+          } else InteractionResultHolder.pass(itemStack)
+        } else InteractionResultHolder.pass(itemStack)
+      } else InteractionResultHolder.success(itemStack)
       )
 
   override def fillItemCategory(group: CreativeModeTab, items: NonNullList[ItemStack]): Unit = {
@@ -66,7 +62,7 @@ object CatBucket extends BaseObject[CatBucket]("cat_bucket") with CatBucketItemM
   EventBus.Forge.register(this)
   EventBus.Mod.addListener(setChangeableModel)
 
-  def setChangeableModel(event: FMLClientSetupEvent): Unit = {
+  protected def setChangeableModel(event: FMLClientSetupEvent): Unit = {
     val func: Runnable = () => ItemProperties.register(Registry.get[CatBucket], catType, (itemStack, _, _, _) => {
       if (itemStack.hasTag) itemStack.getTagElement("cat").getFloat("CatType")
       else 10F
@@ -75,7 +71,7 @@ object CatBucket extends BaseObject[CatBucket]("cat_bucket") with CatBucketItemM
   }
 
   @SubscribeEvent
-  def onBucketRightClick(event: EntityInteract): Unit = if (!event.getWorld.isClientSide) {
+  protected def onBucketRightClick(event: EntityInteract): Unit = if (!event.getWorld.isClientSide) {
     val itemStack = event.getItemStack
     val target = event.getTarget
 
@@ -102,7 +98,7 @@ object CatBucket extends BaseObject[CatBucket]("cat_bucket") with CatBucketItemM
   }
 }
 
-trait CatBucketItemModel {
+sealed trait CatBucketItemModel {
   this: CatBucket.type =>
 
   private sealed abstract class CatType(val model: String)

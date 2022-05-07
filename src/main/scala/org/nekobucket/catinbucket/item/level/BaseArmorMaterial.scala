@@ -6,7 +6,7 @@ import net.minecraft.world.item.ArmorMaterial
 import net.minecraft.world.item.crafting.Ingredient
 import net.minecraftforge.api.distmarker.{ Dist, OnlyIn }
 import org.nekobucket.catinbucket.item.CatIngot
-import org.nekobucket.catinbucket.mod.registry.{ ItemRegistry, Registry }
+import org.nekobucket.catinbucket.mod.registry.Registry
 
 sealed abstract class BaseArmorMaterial(
   private val name: String,
@@ -19,7 +19,7 @@ sealed abstract class BaseArmorMaterial(
   repairMaterial: => Ingredient
 ) extends ArmorMaterial {
 
-  private val HEALTH_PER_SLOT: Array[Int] = Array[Int](13, 15, 16, 11)
+  private final val HEALTH_PER_SLOT: Array[Int] = Array(13, 15, 16, 11)
 
   override def getDurabilityForSlot(pSlot: EquipmentSlot): Int =
     HEALTH_PER_SLOT(pSlot.getIndex) * this.durabilityMultiplier
@@ -44,6 +44,6 @@ sealed abstract class BaseArmorMaterial(
 
 object BaseArmorMaterial {
   // Attributes follow Leather
-  object CAT extends BaseArmorMaterial("cat", 5, List(1, 2, 3, 1).toArray, 15,
+  object CAT extends BaseArmorMaterial("cat", 5, Array(1, 2, 3, 1), 15,
     SoundEvents.ARMOR_EQUIP_LEATHER, 1.0F, 0.0F, Ingredient.of(Registry.get[CatIngot]))
 }

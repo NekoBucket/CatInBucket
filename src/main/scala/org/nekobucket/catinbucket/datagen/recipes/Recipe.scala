@@ -8,11 +8,11 @@ import org.nekobucket.catinbucket.util.Extensions._
 
 import java.util.function.Consumer
 
-case class Recipe(func: Recipe.RecipeFunc) {
+private[datagen] case class Recipe(func: Recipe.RecipeFunc) {
   def save(consumer: Consumer[FinishedRecipe]): Unit = func(consumer)
 }
 
-object Recipe {
+private[catinbucket] object Recipe {
   type RecipeFunc = Consumer[FinishedRecipe] => Unit
 
   def of(id: String)(builder: => RecipeBuilder): Recipe = buildRecipe(id, builder) |> Recipe.apply

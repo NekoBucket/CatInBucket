@@ -4,11 +4,10 @@ import net.minecraft.world.item.{ Item, ItemStack }
 
 import scala.language.implicitConversions
 
-
+/**
+ * Extension methods for several types.
+ */
 object Extensions {
-  implicit class ItemExt(item: Item) {
-    def toItemStack = new ItemStack(item)
-  }
 
   implicit class AnyExt[T](x: T) {
     def ifElse[R](predicate: T => Boolean)(doTrue: T => R, doFalse: T => R): R =
@@ -25,12 +24,15 @@ object Extensions {
     }
   }
 
-  implicit class ItemStackExt(itemStack: ItemStack) {
+  implicit class ItemExt(item: Item) {
+    def toItemStack = new ItemStack(item)
+  }
+
+  implicit class ItemStackExt(private val itemStack: ItemStack) {
     // adjust count in ItemStack
-    def addCount(n: Int): ItemStack = {
+    def addCount(n: Int): ItemStack = this.also { _ =>
       itemStack.setCount(itemStack.getCount + n)
-      itemStack
-    }
+    }.itemStack
     def reduceCount(n: Int): ItemStack = addCount(-n)
     // custom operators
     def += (n: Int): ItemStack = addCount(n)

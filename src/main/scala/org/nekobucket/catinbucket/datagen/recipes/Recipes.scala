@@ -1,13 +1,15 @@
 package org.nekobucket.catinbucket.datagen.recipes
 
-import net.minecraft.data.recipes.{ RecipeProvider, FinishedRecipe}
+import net.minecraft.data.recipes.{ FinishedRecipe, RecipeProvider }
 import net.minecraft.data.DataGenerator
-import org.nekobucket.catinbucket.datagen.DataGenObj
+import org.nekobucket.catinbucket.datagen.DataGenObjAddableWithFunction
 
 import java.util.function.Consumer
 
 
-class Recipes(implicit generator: DataGenerator) extends RecipeProvider(generator) {
+private[datagen] class Recipes(implicit generator: DataGenerator)
+  extends RecipeProvider(generator) {
+
   import Recipes._
 
   override def buildCraftingRecipes(pFinishedRecipeConsumer: Consumer[FinishedRecipe]): Unit = {
@@ -15,7 +17,4 @@ class Recipes(implicit generator: DataGenerator) extends RecipeProvider(generato
   }
 }
 
-object Recipes extends DataGenObj[() => Recipe] {
-  def addAsFunc(recipe: => Recipe): Unit = array += (() => recipe)
-  def +~(recipe: => Recipe): Unit = addAsFunc(recipe)
-}
+private[catinbucket] object Recipes extends DataGenObjAddableWithFunction[Recipe]

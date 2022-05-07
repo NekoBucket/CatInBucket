@@ -1,8 +1,8 @@
 package org.nekobucket.catinbucket.block
 
 import net.minecraft.data.recipes.ShapedRecipeBuilder
+import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties
-import net.minecraft.world.level.block.{ Block, SoundType }
 import net.minecraft.world.level.material.Material
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile
 import org.nekobucket.catinbucket.datagen.blockstates.{ BlockState, BlockStates }
@@ -13,7 +13,7 @@ import org.nekobucket.catinbucket.mod.registry.{ Register, Registry }
 import org.nekobucket.catinbucket.mod.{ BaseObject, MOD_ID }
 
 @Register.AsBlock
-case class CatBlock() extends BaseBlock(Properties
+case class CatBlock protected() extends BaseBlock(Properties
   .of(Material.METAL)
   .requiresCorrectToolForDrops
   .strength(5, 6)
@@ -26,10 +26,10 @@ object CatBlock extends BaseObject[CatBlock]("cat_block") with CatBlockBlockStat
   object Item extends BaseObject[CatBlock.Item](ID) with CatBlockRecipe with CatBlockItemModel
 }
 
-trait CatBlockRecipe {
+sealed trait CatBlockRecipe {
   this: CatBlock.Item.type =>
 
-  Recipes +~ Recipe.of(s"${ ID }_from_crafting_${CatIngot.ID}") {
+  Recipes += Recipe.of(s"${ ID }_from_crafting_${CatIngot.ID}") {
     ShapedRecipeBuilder.shaped(Registry.get[CatBlock.Item], 1)
       .pattern("XXX")
       .pattern("XXX")
@@ -38,7 +38,7 @@ trait CatBlockRecipe {
   }
 }
 
-trait CatBlockItemModel {
+sealed trait CatBlockItemModel {
   this: CatBlock.Item.type =>
 
   ItemModels += (
@@ -47,7 +47,7 @@ trait CatBlockItemModel {
     )
 }
 
-trait CatBlockBlockState {
+sealed trait CatBlockBlockState {
   this: CatBlock.type =>
 
   BlockStates += BlockState.ofSimple

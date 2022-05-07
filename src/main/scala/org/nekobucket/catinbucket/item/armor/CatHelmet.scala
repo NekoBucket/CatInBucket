@@ -12,14 +12,14 @@ import org.nekobucket.catinbucket.mod.BaseObject
 import org.nekobucket.catinbucket.mod.registry.{ ItemRegistry, Register, Registry }
 
 @Register.AsItem
-case class CatHelmet() extends BaseArmorItem(BaseArmorMaterial.CAT, EquipmentSlot.HEAD)
+case class CatHelmet protected() extends BaseArmorItem(BaseArmorMaterial.CAT, EquipmentSlot.HEAD)
 
 object CatHelmet extends BaseObject[CatHelmet]("cat_helmet") with CatHelmetRecipe with CatHelmetItemModel
 
-trait CatHelmetRecipe {
+sealed trait CatHelmetRecipe {
   this: CatHelmet.type =>
 
-  Recipes +~ Recipe.of(s"${ID}_from_crafting") {
+  Recipes += Recipe.of(s"${ID}_from_crafting") {
     ShapedRecipeBuilder.shaped(Registry.get[CatHelmet], 1)
       .pattern("OOO")
       .pattern("X X")
@@ -28,7 +28,7 @@ trait CatHelmetRecipe {
   }
 }
 
-trait CatHelmetItemModel {
+sealed trait CatHelmetItemModel {
   this: CatHelmet.type =>
 
   ItemModels += (_.getBuilder(ID)

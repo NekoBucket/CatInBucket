@@ -8,7 +8,7 @@ import org.nekobucket.catinbucket.mod.MOD_ID
 
 import scala.collection.mutable.ArrayBuffer
 
-class ItemModels(implicit generator: DataGenerator, implicit val fileHelper: ExistingFileHelper)
+private[datagen] class ItemModels(implicit generator: DataGenerator, implicit val fileHelper: ExistingFileHelper)
   extends ItemModelProvider(generator, MOD_ID, fileHelper) with Models[ItemModelBuilder] {
 
   override def registerModels(): Unit = array.foreach(_(this))
@@ -16,4 +16,4 @@ class ItemModels(implicit generator: DataGenerator, implicit val fileHelper: Exi
   override def array: ArrayBuffer[Models[ItemModelBuilder] => ItemModelBuilder] = ItemModels.array
 }
 
-object ItemModels extends DataGenObj[Models[ItemModelBuilder] => ItemModelBuilder]
+private[catinbucket] object ItemModels extends DataGenObj[Models[ItemModelBuilder] => ItemModelBuilder]

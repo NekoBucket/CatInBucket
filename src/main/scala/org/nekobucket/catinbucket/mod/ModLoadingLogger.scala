@@ -4,36 +4,35 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import net.minecraftforge.fml.event.lifecycle._
-import org.nekobucket.catinbucket.mod.EventBus.getEventBus
+import org.nekobucket.catinbucket.util.EventBus
+import org.nekobucket.catinbucket.util.EventBus.getEventBus
 import org.nekobucket.catinbucket.util.event.RegistryEvent
-
-import java.util.stream.Collectors
 
 /* Provides a service as described. */
 trait ModLoadingLogger {
   EventBus.Mod.register(this)
 
   @SubscribeEvent
-  def setup(event: FMLCommonSetupEvent): Unit = {
+  protected def setup(event: FMLCommonSetupEvent): Unit = {
     LOGGER.info(s"$MOD_NAME: Start initialization")
   }
   @SubscribeEvent
-  def doClientStuff(event: FMLClientSetupEvent): Unit = {
+  protected def doClientStuff(event: FMLClientSetupEvent): Unit = {
 //    LOGGER.info(s"Get game setting ${event.getMinecraftSupplier.get.options}")
   }
   @SubscribeEvent
-  def processIMC(event: InterModProcessEvent): Unit = {
+  protected def processIMC(event: InterModProcessEvent): Unit = {
 //    LOGGER.info(s"Got IMC ${event.getIMCStream.map(_.getMessageSupplier.get).collect(Collectors.toList)}")
   }
 
   @SubscribeEvent
-  def onFinished(event: FMLLoadCompleteEvent): Unit = {
+  protected def onFinished(event: FMLLoadCompleteEvent): Unit = {
     LOGGER.info(s"$MOD_NAME: loading finished")
   }
 
   // custom event
   @SubscribeEvent
-  def onRegisterItem(event: RegistryEvent): Unit = {
+  protected def onRegisterItem(event: RegistryEvent[_]): Unit = {
     val tStr = event.registryType match {
       case t if classOf[Item].isAssignableFrom(t) => "item"
       case t if classOf[Block].isAssignableFrom(t) => "block"

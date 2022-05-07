@@ -8,12 +8,12 @@ import net.minecraftforge.forge.event.lifecycle.GatherDataEvent
 import org.nekobucket.catinbucket.datagen.blockstates.BlockStates
 import org.nekobucket.catinbucket.datagen.models.{ BlockModels, ItemModels }
 import org.nekobucket.catinbucket.datagen.recipes.Recipes
-import org.nekobucket.catinbucket.mod.EventBus.Mod
+import org.nekobucket.catinbucket.util.EventBus.Mod
 import org.nekobucket.catinbucket.mod.MOD_ID
 
 
 @EventBusSubscriber(bus = Mod, modid = MOD_ID)
-object DataGenerator {
+private[datagen] object DataGenerator {
 
   @SubscribeEvent
   def gatherData(event: GatherDataEvent): Unit = {

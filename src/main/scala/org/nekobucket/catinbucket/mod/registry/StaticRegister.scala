@@ -11,10 +11,10 @@ import scala.reflect.ClassTag
 /**
  * Automatically register items and blocks with annotated classes.
  */
-private[catinbucket] abstract class StaticRegister[T <: IForgeRegistryEntry[T] : ClassTag, R <: Annotation : ClassTag](implicit tag: ClassTag[R]) {
+private[catinbucket] abstract class StaticRegister[T <: IForgeRegistryEntry[T] : ClassTag, R <: Annotation](implicit tag: ClassTag[R]) {
   this: Registry[T] =>
 
-  private def loader = Thread.currentThread().getContextClassLoader
+  private def loader = Thread.currentThread.getContextClassLoader
 
   private def getAnnotatedClassPairs: List[(Class[_ <: T], Class[R])] =
     ModList.get.getModFileById(MOD_ID).getFile.getScanResult.getAnnotations.toArray.toList
@@ -39,6 +39,6 @@ private[catinbucket] abstract class StaticRegister[T <: IForgeRegistryEntry[T] :
    * Scan and register classes annotated by `R`
    */
   private[catinbucket] def init(): Unit = pairs.foreach {
-    case (cls, _) => register(getCompanionObject(cls))(ClassTag(cls))
+    case (cls, _) => addEntry(getCompanionObject(cls))(ClassTag(cls))
   }
 }

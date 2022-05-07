@@ -7,7 +7,7 @@ trait ModInitializer {
   // scan and register annotated
   BlockRegistry.init()
   ItemRegistry.init()
-  LOGGER.info(s"$MOD_NAME: Annotation scanned")
+  LOGGER.info(s"$MOD_NAME: Annotations scanned")
 
   // register to minecraft
   BlockRegistry.register()

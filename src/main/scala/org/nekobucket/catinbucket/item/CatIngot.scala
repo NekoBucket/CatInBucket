@@ -7,17 +7,17 @@ import org.nekobucket.catinbucket.block.CatBlock
 import org.nekobucket.catinbucket.datagen.models.{ ItemModels, itemGenerated }
 import org.nekobucket.catinbucket.datagen.recipes.{ Recipe, Recipes }
 import org.nekobucket.catinbucket.mod.BaseObject
-import org.nekobucket.catinbucket.mod.registry.{ ItemRegistry, Register, Registry }
+import org.nekobucket.catinbucket.mod.registry.{ Register, Registry }
 
 @Register.AsItem
-case class CatIngot() extends BaseItem
+case class CatIngot protected() extends BaseItem
 
 object CatIngot extends BaseObject[CatIngot]("cat_ingot") with CatIngotRecipe with CatIngotItemModel
 
-trait CatIngotRecipe {
+sealed trait CatIngotRecipe {
   this: CatIngot.type =>
 
-  Recipes +~ Recipe.of(s"${ID}_from_crafting_3fish_1iron") {
+  Recipes += Recipe.of(s"${ID}_from_crafting_3fish_1iron") {
     ShapedRecipeBuilder.shaped(Registry.get[CatIngot], 1)
       .pattern("XXX")
       .pattern(" O ")
@@ -27,14 +27,14 @@ trait CatIngotRecipe {
       .define('O', Items.IRON_INGOT)
   }
 
-  Recipes +~ Recipe.of(s"${ID}_from_crafting_${CatBlock.ID}") {
+  Recipes += Recipe.of(s"${ID}_from_crafting_${CatBlock.ID}") {
     ShapelessRecipeBuilder.shapeless(Registry.get[CatIngot], 9)
       .requires(Registry.get[CatBlock.Item], 1)
   }
 
 }
 
-trait CatIngotItemModel {
+sealed trait CatIngotItemModel {
   this: CatIngot.type =>
 
   ItemModels += (_.getBuilder(ID)
