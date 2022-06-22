@@ -1,0 +1,8 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "top": "catinbucket:block/stove_top",
+    "front": "catinbucket:block/stove_front_on",
+    "side": "catinbucket:block/stove_front_on"
+  }
+}

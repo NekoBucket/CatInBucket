@@ -22,5 +22,13 @@ public class Register {
     @Target(ElementType.TYPE)
     public @interface AsBlock {
     }
+
+    /**
+     * ONLY works for class
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.TYPE)
+    public @interface AsBlockEntity {
+    }
 }
 

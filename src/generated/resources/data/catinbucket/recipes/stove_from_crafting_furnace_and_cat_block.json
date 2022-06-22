@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "catinbucket",
+  "pattern": [
+    "XXX",
+    "XOX"
+  ],
+  "key": {
+    "O": {
+      "item": "catinbucket:cat_block"
+    },
+    "X": {
+      "item": "minecraft:furnace"
+    }
+  },
+  "result": {
+    "item": "catinbucket:stove"
+  }
+}

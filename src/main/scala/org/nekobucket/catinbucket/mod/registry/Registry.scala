@@ -2,27 +2,27 @@ package org.nekobucket.catinbucket.mod.registry
 
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
-import net.minecraftforge.registries.{ DeferredRegister, IForgeRegistryEntry, RegistryObject }
-import org.nekobucket.catinbucket.util.EventBus.getEventBus
-import org.nekobucket.catinbucket.mod.exception.RequestRegistryException
+import net.minecraftforge.registries.{ DeferredRegister, RegistryObject }
 import org.nekobucket.catinbucket.mod.BaseObject
+import org.nekobucket.catinbucket.mod.exception.RequestRegistryException
 import org.nekobucket.catinbucket.util.EventBus
+import org.nekobucket.catinbucket.util.EventBus.getEventBus
 import org.nekobucket.catinbucket.util.Extensions.AnyExt
 import org.nekobucket.catinbucket.util.event.RegistryEvent
 
 import scala.reflect.ClassTag
 
 
-private[registry] trait Registry[T <: IForgeRegistryEntry[T]] {
+private[registry] trait Registry[T] {
   protected val entries: DeferredRegister[T]
 
-  private[registry] def addEntry[R <: T: ClassTag](name: String, supplier: BaseObject[R]): RegistryObject[R] = {
+  protected[registry] def addEntry[R <: T: ClassTag](name: String, supplier: BaseObject[R]): RegistryObject[R] = {
     entries.register(name, supplier).also { _ =>
       EventBus.Mod.post(RegistryEvent[R](name))
     }
   }
 
-  private[registry] def addEntry[R <: T](baseObj: BaseObject[R])(implicit tagR: ClassTag[R]): RegistryObject[R] =
+  protected[registry] def addEntry[R <: T](baseObj: BaseObject[R])(implicit tagR: ClassTag[R]): RegistryObject[R] =
     addEntry[R](baseObj.ID, baseObj)(tagR)
 
   private[catinbucket] def register(): Unit = entries.register(EventBus.Mod)

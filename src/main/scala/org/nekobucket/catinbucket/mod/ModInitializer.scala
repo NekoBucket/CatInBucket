@@ -1,6 +1,6 @@
 package org.nekobucket.catinbucket.mod
 
-import org.nekobucket.catinbucket.mod.registry.{ BlockRegistry, ItemRegistry }
+import org.nekobucket.catinbucket.mod.registry.{ BlockEntityRegistry, BlockRegistry, ItemRegistry }
 
 /* Register block and items to mod */
 trait ModInitializer {
@@ -13,4 +13,9 @@ trait ModInitializer {
   BlockRegistry.register()
   ItemRegistry.register()
   LOGGER.info(s"$MOD_NAME: Items registered")
+
+  // register block entities, should be after items and blocks
+  BlockEntityRegistry.init()
+  BlockEntityRegistry.register()
+  LOGGER.info(s"$MOD_NAME: Block entities registered")
 }

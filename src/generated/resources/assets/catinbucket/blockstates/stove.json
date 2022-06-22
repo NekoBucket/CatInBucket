@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "is_heating=0": {
+      "model": "catinbucket:block/stove"
+    },
+    "is_heating=1": {
+      "model": "catinbucket:block/stove_on"
+    }
+  }
+}

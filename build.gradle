@@ -156,10 +156,6 @@ dependencies {
     runtimeOnly(group: 'com.kotori316', name: 'ScalableCatsForce'.toLowerCase(Locale.ROOT), version: project.slp_version, classifier: 'with-library') {
         transitive(false)
     }
-
-//    shadow(group: "space.controlnet", name: "lightioc_2.13", version: "0.3.0") {
-//        transitive(false)
-//    }
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

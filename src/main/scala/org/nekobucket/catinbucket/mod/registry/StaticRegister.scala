@@ -1,9 +1,11 @@
 package org.nekobucket.catinbucket.mod.registry
 
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraftforge.fml.ModList
 import net.minecraftforge.forgespi.language.ModFileScanData.AnnotationData
-import net.minecraftforge.registries.IForgeRegistryEntry
-import org.nekobucket.catinbucket.mod.{ MOD_ID, BaseObject }
+import org.nekobucket.catinbucket.entity.BaseBlockEntityObject
+import org.nekobucket.catinbucket.mod.{ BaseObject, MOD_ID }
 
 import java.lang.annotation.Annotation
 import scala.reflect.ClassTag
@@ -11,8 +13,8 @@ import scala.reflect.ClassTag
 /**
  * Automatically register items and blocks with annotated classes.
  */
-private[catinbucket] abstract class StaticRegister[T <: IForgeRegistryEntry[T] : ClassTag, R <: Annotation](implicit tag: ClassTag[R]) {
-  this: Registry[T] =>
+private[catinbucket] abstract class StaticRegister[T : ClassTag, R <: Annotation](implicit tag: ClassTag[R]) {
+  registry: Registry[T] =>
 
   private def loader = Thread.currentThread.getContextClassLoader
 
@@ -39,6 +41,11 @@ private[catinbucket] abstract class StaticRegister[T <: IForgeRegistryEntry[T] :
    * Scan and register classes annotated by `R`
    */
   private[catinbucket] def init(): Unit = pairs.foreach {
+    case (cls, anno) if anno == classOf[Register.AsBlockEntity] =>
+      val obj: BaseBlockEntityObject[_ <: BlockEntity, Block] =
+        getCompanionObject(cls).asInstanceOf[BaseBlockEntityObject[_ <: BlockEntity, Block]]
+
+      BlockEntityRegistry.addEntry(obj)(ClassTag(cls), obj.tagB)
     case (cls, _) => addEntry(getCompanionObject(cls))(ClassTag(cls))
   }
 }

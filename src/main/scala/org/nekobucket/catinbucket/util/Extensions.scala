@@ -3,6 +3,7 @@ package org.nekobucket.catinbucket.util
 import net.minecraft.world.item.{ Item, ItemStack }
 
 import scala.language.implicitConversions
+import scala.jdk.CollectionConverters._
 
 /**
  * Extension methods for several types.
@@ -39,5 +40,9 @@ object Extensions {
     def -= (n: Int): ItemStack = reduceCount(n)
     def ++ : ItemStack = this += 1
     def -- : ItemStack = this -= 1
+  }
+
+  implicit class JavaListExt[T](l: java.util.List[T]) {
+    def toList: List[T] = l.asScala.toList
   }
 }

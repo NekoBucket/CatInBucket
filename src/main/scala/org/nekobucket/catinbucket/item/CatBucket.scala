@@ -16,15 +16,14 @@ import net.minecraft.world.{ InteractionHand, InteractionResultHolder }
 import net.minecraftforge.client.model.generators.ModelFile
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract
-import net.minecraftforge.eventbus.api.SubscribeEvent
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
-import org.nekobucket.catinbucket.mod.Predicates.catType
 import org.nekobucket.catinbucket.datagen.models.{ ItemModels, itemGenerated }
-import org.nekobucket.catinbucket.util.EventBus.getEventBus
+import org.nekobucket.catinbucket.mod.Predicates.catType
 import org.nekobucket.catinbucket.mod.exception.CatTypeNotFoundException
 import org.nekobucket.catinbucket.mod.registry.{ Register, Registry }
 import org.nekobucket.catinbucket.mod.{ BaseObject, MOD_ID }
 import org.nekobucket.catinbucket.util.EventBus
+import org.nekobucket.catinbucket.util.EventBus.getEventBus
 import org.nekobucket.catinbucket.util.Extensions._
 
 @Register.AsItem
@@ -37,11 +36,15 @@ case class CatBucket protected() extends BaseItem(new Properties().stacksTo(1)) 
         if (target.getType == HitResult.Type.BLOCK) {
           val blockPos = target.asInstanceOf[BlockHitResult].getBlockPos
           if (!world.getBlockState(blockPos).getMaterial.isLiquid) {
+            // spawn the cat
             val catEntity = EntityType.CAT.spawn(world.asInstanceOf[ServerLevel], itemStack, player, blockPos.above, MobSpawnType.BUCKET, false, false)
             new CompoundTag().also(catEntity.save)
               .merge(itemStack.getTagElement("cat"))
               .also(catEntity.load)
+            // consume the cat bucket
             itemStack -= 1
+            // return a bucket to player
+            player.getInventory.add(Items.BUCKET.toItemStack)
             InteractionResultHolder.consume(itemStack)
           } else InteractionResultHolder.pass(itemStack)
         } else InteractionResultHolder.pass(itemStack)
@@ -59,7 +62,7 @@ case class CatBucket protected() extends BaseItem(new Properties().stacksTo(1)) 
 }
 
 object CatBucket extends BaseObject[CatBucket]("cat_bucket") with CatBucketItemModel {
-  EventBus.Forge.register(this)
+  EventBus.Forge.addListener(onBucketRightClick)
   EventBus.Mod.addListener(setChangeableModel)
 
   protected def setChangeableModel(event: FMLClientSetupEvent): Unit = {
@@ -70,7 +73,6 @@ object CatBucket extends BaseObject[CatBucket]("cat_bucket") with CatBucketItemM
     event.enqueueWork(func)
   }
 
-  @SubscribeEvent
   protected def onBucketRightClick(event: EntityInteract): Unit = if (!event.getWorld.isClientSide) {
     val itemStack = event.getItemStack
     val target = event.getTarget
@@ -93,7 +95,7 @@ object CatBucket extends BaseObject[CatBucket]("cat_bucket") with CatBucketItemM
           itemStack.addTagElement("cat", nbt)
         }
       } |> event.getPlayer.addItem
-      target.remove(RemovalReason.valueOf("BUCKET"))
+      target.remove(RemovalReason.DISCARDED)
     }
   }
 }
