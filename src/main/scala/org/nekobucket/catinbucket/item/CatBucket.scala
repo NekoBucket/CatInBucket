@@ -52,12 +52,13 @@ case class CatBucket protected() extends BaseItem(new Properties().stacksTo(1)) 
       )
 
   override def fillItemCategory(group: CreativeModeTab, items: NonNullList[ItemStack]): Unit = {
-    (0 to 10).map(_.toFloat)
-      .foreach { nbtValue =>
-        items.add(this.toItemStack.also {
-          _.addTagElement("cat", new CompoundTag().also(_.putFloat("CatType", nbtValue)))
-        })
-      }
+    if (allowdedIn(group))
+      (0 to 10).map(_.toFloat)
+        .foreach { nbtValue =>
+          items.add(this.toItemStack.also {
+            _.addTagElement("cat", new CompoundTag().also(_.putFloat("CatType", nbtValue)))
+          })
+        }
   }
 }
 
@@ -79,7 +80,9 @@ object CatBucket extends BaseObject[CatBucket]("cat_bucket") with CatBucketItemM
 
     if ( {
       def useBucket: Boolean = itemStack.getItem == Items.BUCKET
+
       def targetCat: Boolean = target.getType == EntityType.CAT
+
       useBucket && targetCat
     }) {
       itemStack -= 1
@@ -107,15 +110,25 @@ sealed trait CatBucketItemModel {
 
   private object CatType {
     object Tabby extends CatType(s"${ ID }_tabby")
+
     object Tuxedo extends CatType(s"${ ID }_black")
+
     object Red extends CatType(s"${ ID }_red")
+
     object Siamese extends CatType(s"${ ID }_siamese")
+
     object BritishShorthair extends CatType(s"${ ID }_british_shorthair")
+
     object Calico extends CatType(s"${ ID }_calico")
+
     object Persian extends CatType(s"${ ID }_persian")
+
     object Ragdoll extends CatType(s"${ ID }_ragdoll")
+
     object White extends CatType(s"${ ID }_white")
+
     object Jellie extends CatType(s"${ ID }_jellie")
+
     object Black extends CatType(s"${ ID }_all_black")
 
     val get: Float => CatType = {
@@ -135,6 +148,7 @@ sealed trait CatBucketItemModel {
   }
 
   private def getPath(id: String) = s"$MOD_ID:item/$id"
+
   private def getModelFile(id: String): ModelFile = id |> getPath |> (new UncheckedModelFile(_))
 
   (0 to 10).map(_.toFloat)

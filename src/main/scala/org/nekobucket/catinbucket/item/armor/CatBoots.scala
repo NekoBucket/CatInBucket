@@ -24,9 +24,10 @@ case class CatBoots protected() extends BaseArmorItem(BaseArmorMaterial.CAT, Equ
   }
 
   override def fillItemCategory(pCategory: CreativeModeTab, pItems: NonNullList[ItemStack]): Unit = {
-    pItems.add(this.toItemStack.also {
-      _.enchant(Enchantments.FALL_PROTECTION, 2)
-    })
+    if (allowdedIn(pCategory))
+      pItems.add(this.toItemStack.also {
+        _.enchant(Enchantments.FALL_PROTECTION, 2)
+      })
   }
 }
 
@@ -35,7 +36,7 @@ object CatBoots extends BaseObject[CatBoots]("cat_boots") with CatBootsRecipe wi
 sealed trait CatBootsRecipe {
   this: CatBoots.type =>
 
-  Recipes += Recipe.of(s"${ID}_from_crafting") {
+  Recipes += Recipe.of(s"${ ID }_from_crafting") {
     ShapedRecipeBuilder.shaped(Registry.get[CatBoots], 1)
       .pattern("X X")
       .pattern("O O")
@@ -50,5 +51,5 @@ sealed trait CatBootsItemModel {
   ItemModels += (_.getBuilder(CatBoots.ID)
     .parent(new UncheckedModelFile("minecraft:item/iron_boots"))
     .texture("layer0", s"item/$ID")
-  )
+    )
 }
