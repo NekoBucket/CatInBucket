@@ -1,2 +1,3 @@
 # Cat in Bucket
-A Minecraft mod.
+
+A mod planned to add more interactive with cute cats in Minecraft.
