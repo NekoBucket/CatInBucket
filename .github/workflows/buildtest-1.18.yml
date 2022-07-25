@@ -30,6 +30,9 @@ jobs:
           chmod 777 ./gradlew
           ./gradlew build --no-daemon
 
+      - name: Generate JAR
+        run: ./gradlew jar
+
 
   datagen:
     needs: [build]
