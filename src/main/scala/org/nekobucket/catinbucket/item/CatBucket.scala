@@ -7,10 +7,11 @@ import net.minecraft.nbt.CompoundTag
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.entity.Entity.RemovalReason
 import net.minecraft.world.entity.player.Player
+import net.minecraft.world.entity.projectile.ProjectileUtil
 import net.minecraft.world.entity.{ EntityType, MobSpawnType }
-import net.minecraft.world.item.Item.Properties
+import net.minecraft.world.item.Item.{ Properties, getPlayerPOVHitResult }
 import net.minecraft.world.item.{ CreativeModeTab, ItemStack, Items }
-import net.minecraft.world.level.Level
+import net.minecraft.world.level.{ ClipContext, Level }
 import net.minecraft.world.phys.{ BlockHitResult, HitResult }
 import net.minecraft.world.{ InteractionHand, InteractionResultHolder }
 import net.minecraftforge.client.model.generators.ModelFile
@@ -32,9 +33,9 @@ case class CatBucket protected() extends BaseItem(new Properties().stacksTo(1)) 
   override def use(world: Level, player: Player, hand: InteractionHand): InteractionResultHolder[ItemStack] =
     player.getItemInHand(hand) |> (itemStack =>
       if (!world.isClientSide) {
-        val target = Minecraft.getInstance.hitResult
+        val target = getPlayerPOVHitResult(world, player, ClipContext.Fluid.NONE)
         if (target.getType == HitResult.Type.BLOCK) {
-          val blockPos = target.asInstanceOf[BlockHitResult].getBlockPos
+          val blockPos = target.getBlockPos
           if (!world.getBlockState(blockPos).getMaterial.isLiquid) {
             // spawn the cat
             val catEntity = EntityType.CAT.spawn(world.asInstanceOf[ServerLevel], itemStack, player, blockPos.above, MobSpawnType.BUCKET, false, false)
