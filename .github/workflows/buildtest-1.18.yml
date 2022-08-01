@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - "1.18.2/dev"
+      - "1.18.2/hotfix/*"
+      - "1.18.2/release/*"
 jobs:
   build:
     runs-on: ubuntu-20.04
