@@ -39,6 +39,10 @@ case class CatBucket protected() extends BaseItem(new Properties().stacksTo(1)) 
           if (!world.getBlockState(blockPos).getMaterial.isLiquid) {
             // spawn the cat
             val catEntity = EntityType.CAT.spawn(world.asInstanceOf[ServerLevel], itemStack, player, blockPos.above, MobSpawnType.BUCKET, false, false)
+            if (catEntity == null) {
+              return InteractionResultHolder.pass(itemStack)
+            }
+
             new CompoundTag().also(catEntity.save)
               .merge(itemStack.getTagElement("cat"))
               .also(catEntity.load)
